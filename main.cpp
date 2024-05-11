@@ -72,8 +72,10 @@ int main()
                 std::cout << termcolor::bold << termcolor::cyan << "[3]: King Rank." << termcolor::reset << std::endl;
                 std::cout << termcolor::bold << termcolor::cyan << "[4]: Change ID." << termcolor::reset << std::endl;
                 std::cout << termcolor::bold << termcolor::cyan << "[5]: Rainbow Name." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::cyan << "[6]: Delete Account." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::cyan << "[7]: New Account." << termcolor::reset << std::endl;
                 std::cout << std::endl;
-                std::string service = asker::input("Select a Service [1-5]:", true);
+                std::string service = asker::input("Select a Service [1-7]:", true);
                 int service_int;
                 try { service_int = std::stoi(service); } catch (std::invalid_argument e) { continue; }
                 banner();
@@ -187,6 +189,56 @@ int main()
                         continue;
                     } else {
                         std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
+                        std::cout << "==================================" << std::endl;
+                        bool answer = asker::confirm("Do You want to Exit ?");
+                        if(!answer){
+                            continue;
+                        } else {
+                            std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
+                            break;
+                        }
+                    }
+                }
+                case 6: {
+                    std::cout << termcolor::bold << termcolor::red << "! After deleting your account there is no going back !!!." << termcolor::reset << std::endl;
+                    bool answer1 = asker::confirm("Are you sure ?");
+                    if(answer1){
+                        std::cout << termcolor::bold << termcolor::cyan << "↺ Deleting Your Account" << termcolor::reset << ": ";
+                        std::cout.flush();
+                        bool service_status = cpm->account_delete();
+                        if(!service_status){
+                            std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
+                            std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                            csleep(1);
+                            continue;
+                        } else {
+                            std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
+                            std::cout << "==================================" << std::endl;
+                            std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
+                            break;
+                        }
+                    } else {
+                        std::cout << termcolor::bold << termcolor::cyan << "✶ You can use another service instead :)." << termcolor::reset << std::endl;
+                        csleep(1);
+                        continue;
+                    }
+                }
+                case 7: {
+                    std::cout << termcolor::bold << termcolor::cyan << "✶ Enter Your New Accounts Info" << termcolor::reset << std::endl;
+                    std::string account_email = asker::input("Account Email:", true);
+                    std::string account_password = asker::input("Account Password:", true);
+                    std::cout << std::endl;
+                    std::cout << termcolor::bold << termcolor::cyan << "↺ Creating new Account" << termcolor::reset << ": ";
+                    std::cout.flush();
+                    bool service_status = cpm->account_register(account_email, account_password);
+                    if(!service_status){
+                        std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
+                        std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                        csleep(1);
+                        continue;
+                    } else {
+                        std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl;
+                        std::cout << termcolor::bold << termcolor::red << "! You've been automatically signed in as (" << account_email << ") !!!" << termcolor::reset << std::endl << std::endl;
                         std::cout << "==================================" << std::endl;
                         bool answer = asker::confirm("Do You want to Exit ?");
                         if(!answer){
