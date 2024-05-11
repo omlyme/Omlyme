@@ -15,7 +15,7 @@ void csleep(unsigned milliseconds)
 
 void csleep(unsigned milliseconds)
 {
-    sleep(milliseconds); // takes microseconds
+    sleep(milliseconds);
 }
 #endif
 
@@ -23,7 +23,6 @@ std::string colorizeNameRainbow(const std::string& name) {
     std::string rainbowColors[] = { "FF0000", "FFFF00", "00FF00", "00FFFF", "0000FF", "FF00FF" };
     std::string coloredName;
     int colorIndex = 0;
-
     for (char c : name) {
         if(c == ' ') {
             coloredName.push_back(toupper(c));
@@ -31,9 +30,8 @@ std::string colorizeNameRainbow(const std::string& name) {
         }
         coloredName.append("[" + rainbowColors[colorIndex] + "]");
         coloredName.push_back(toupper(c));
-
-        colorIndex++;  // Simply increment the index for each character
-        colorIndex %= sizeof(rainbowColors) / sizeof(rainbowColors[0]); // Wrap around when reaching the end
+        colorIndex++;
+        colorIndex %= sizeof(rainbowColors) / sizeof(rainbowColors[0]);
     }
 
     return coloredName;
@@ -64,7 +62,7 @@ int main()
             std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
             csleep(3);
             continue;
-        } else {//RUJHYZ1BTL
+        } else {
             std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl;
             csleep(2);
             while(true){
