@@ -19,3 +19,4 @@
 *.app
 *.elf
 build-x64/
+CMakeLists.txt.user
