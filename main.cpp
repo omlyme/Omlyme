@@ -58,13 +58,38 @@ int main()
         std::cout.flush();
         CPMNuker *cpm = new CPMNuker(access_key);
         bool login_status = cpm->account_login(account_email, account_password);
+        bool been_registred = false;
         if(!login_status){
             std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
-            csleep(3);
-            continue;
-        } else {
-            std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl;
-            csleep(2);
+            std::cout << "==================================" << std::endl;
+            bool answ = asker::confirm("Want to Register new Account ?");
+            if(!answ){
+                std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                csleep(1);
+                continue;
+            } else {
+                std::cout << std::endl << termcolor::bold << termcolor::cyan << "↺ Creating new Account" << termcolor::reset << ": ";
+                std::cout.flush();
+                bool register_status = cpm->account_register(account_email, account_password);
+                if(!register_status){
+                    std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
+                    std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                    csleep(1);
+                    continue;
+                } else {
+                    std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl;
+                    std::cout << termcolor::bold << termcolor::red << "! You've been automatically signed in as (" << account_email << ") !!!" << termcolor::reset << std::endl;
+                    login_status = true;
+                    been_registred = true;
+                    csleep(3);
+                }
+            }
+        }
+        if(login_status) {
+            if(!been_registred){
+                std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl;
+                csleep(2);
+            }
             while(true){
                 banner();
                 std::cout << termcolor::bold << termcolor::cyan << "[1]: Increase Money." << termcolor::reset << std::endl;
@@ -74,6 +99,7 @@ int main()
                 std::cout << termcolor::bold << termcolor::cyan << "[5]: Rainbow Name." << termcolor::reset << std::endl;
                 std::cout << termcolor::bold << termcolor::cyan << "[6]: Delete Account." << termcolor::reset << std::endl;
                 std::cout << termcolor::bold << termcolor::cyan << "[7]: New Account." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::red << "[0]: Exit." << termcolor::reset << std::endl;
                 std::cout << std::endl;
                 std::string service = asker::input("Select a Service [1-7]:", true);
                 int service_int;
@@ -249,10 +275,18 @@ int main()
                         }
                     }
                 }
+                case 0: {
+                    std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
+                    break;
+                }
                 default: { continue; }
                 }
                 break;
             }
+        } else {
+            std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+            csleep(1);
+            continue;
         }
         break;
     }
