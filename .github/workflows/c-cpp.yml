@@ -13,7 +13,7 @@ jobs:
     - name: Build & Test
         uses: ashutoshvarma/action-cmake-build@master
         with:
-            build-dir: ${{ runner.workspace }}/build
+            build-dir: ${{ runner.workspace }}/bin
             cc: gcc
             cxx: g++
             build-type: Release
