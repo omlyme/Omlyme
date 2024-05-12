@@ -1,6 +1,7 @@
 #include <iostream>
 #include <termcolor/termcolor.hpp>
 #include "include/cpmnuker.hpp"
+#include "include/base64.hpp"
 #include "include/asker.hpp"
 
 #ifdef _WIN32
@@ -136,14 +137,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
                     csleep(1);
                     continue;
-                    // std::cout << "==================================" << std::endl;
-                    // bool answer = asker::confirm("Do You want to Exit ?");
-                    // if(!answer){
-                    //     continue;
-                    // } else {
-                    //     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
-                    //     break;
-                    // }
                 }
             }
             case 2: {
@@ -162,14 +155,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
                     csleep(1);
                     continue;
-                    // std::cout << "==================================" << std::endl;
-                    // bool answer = asker::confirm("Do You want to Exit ?");
-                    // if(!answer){
-                    //     continue;
-                    // } else {
-                    //     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
-                    //     break;
-                    // }
                 }
             }
             case 3: {
@@ -186,14 +171,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
                     csleep(1);
                     continue;
-                    // std::cout << "==================================" << std::endl;
-                    // bool answer = asker::confirm("Do You want to Exit ?");
-                    // if(!answer){
-                    //     continue;
-                    // } else {
-                    //     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
-                    //     break;
-                    // }
                 }
             }
             case 4: {
@@ -212,14 +189,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
                     csleep(1);
                     continue;
-                    // std::cout << "==================================" << std::endl;
-                    // bool answer = asker::confirm("Do You want to Exit ?");
-                    // if(!answer){
-                    //     continue;
-                    // } else {
-                    //     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
-                    //     break;
-                    // }
                 }
             }
             case 5: {
@@ -239,14 +208,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
                     csleep(1);
                     continue;
-                    // std::cout << "==================================" << std::endl;
-                    // bool answer = asker::confirm("Do You want to Exit ?");
-                    // if(!answer){
-                    //     continue;
-                    // } else {
-                    //     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
-                    //     break;
-                    // }
                 }
             }
             case 6: {

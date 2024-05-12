@@ -5,16 +5,14 @@ project(cpmnuker LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 add_executable(cpmnuker
     main.cpp
-    include/cpmnuker.hpp
-    cpmnuker.cpp
     include/asker.hpp
     include/json.hpp
+    include/cpmnuker.hpp
+    cpmnuker.cpp
+    # include/base64.hpp
+    # base64.cpp
 )
 
 include(FetchContent)
