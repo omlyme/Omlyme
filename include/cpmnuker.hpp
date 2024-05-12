@@ -12,7 +12,7 @@ class CPMNuker
 
 public:
     CPMNuker(std::string access_key);
-    bool account_login(std::string email, std::string password);
+    int account_login(std::string email, std::string password);
     bool account_register(std::string email, std::string password);
     bool account_change_data(std::string vname, std::string vvalue);
     bool account_change_rating();

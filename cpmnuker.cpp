@@ -4,7 +4,7 @@ CPMNuker::CPMNuker(std::string access_key) {
     this->access_key = access_key;
 }
 
-bool CPMNuker::account_login(std::string email, std::string password)
+int CPMNuker::account_login(std::string email, std::string password)
 {
     cpr::Response response = cpr::Post(
         cpr::Url{"https://api.anasov.ly/cpmnuker/login.php"},
@@ -15,11 +15,11 @@ bool CPMNuker::account_login(std::string email, std::string password)
         }
     );
     json data = json::parse(response.text);
-    if(data["ok"]){
+    if(data["ok"] && data["error"] == 0){
         this->auth_token = data["auth"];
-        return true;
+        return 0;
     } else {
-        return false;
+        return data["error"];
     }
 }
 

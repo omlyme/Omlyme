@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(CPMNuker LANGUAGES CXX)
+project(cpmnuker LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-add_executable(CPMNuker
+add_executable(cpmnuker
     main.cpp
     include/cpmnuker.hpp
     cpmnuker.cpp
@@ -27,8 +27,8 @@ FetchContent_Declare(termcolor GIT_REPOSITORY https://github.com/anas-ov/termcol
                                GIT_TAG 977da1b5e33483c9f67b5423fda2b5ab76697d4f)
 FetchContent_MakeAvailable(termcolor)
 
-target_link_libraries(CPMNuker PRIVATE cpr::cpr)
-target_link_libraries(CPMNuker PRIVATE termcolor::termcolor)
+target_link_libraries(cpmnuker PRIVATE cpr::cpr)
+target_link_libraries(cpmnuker PRIVATE termcolor::termcolor)
 
 # if(WIN32) # Install dlls in the same directory as the executable on Windows
 #     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -36,7 +36,7 @@ target_link_libraries(CPMNuker PRIVATE termcolor::termcolor)
 # endif()
 
 # include(GNUInstallDirs)
-# install(TARGETS CPMNuker
+# install(TARGETS cpmnuker
 #     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 #     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 # )

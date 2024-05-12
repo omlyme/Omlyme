@@ -18,5 +18,5 @@
 *.out
 *.app
 *.elf
-build-x64/
+build*/
 *.user
