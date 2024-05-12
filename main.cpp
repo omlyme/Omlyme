@@ -1,7 +1,6 @@
 #include <iostream>
 #include <termcolor/termcolor.hpp>
 #include "include/cpmnuker.hpp"
-#include "include/base64.hpp"
 #include "include/asker.hpp"
 
 #ifdef _WIN32
