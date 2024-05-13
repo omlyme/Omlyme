@@ -11,8 +11,7 @@ add_executable(cpmnuker
     include/json.hpp
     include/cpmnuker.hpp
     cpmnuker.cpp
-    # include/base64.hpp
-    # base64.cpp
+    include/progressbar.hpp
 )
 
 include(FetchContent)

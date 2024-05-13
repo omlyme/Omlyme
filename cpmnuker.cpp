@@ -1,10 +1,10 @@
 #include "include/cpmnuker.hpp"
 
-CPMNuker::CPMNuker(std::string access_key) {
+CPMNuker::CPMNuker(const std::string& access_key) {
     this->access_key = access_key;
 }
 
-int CPMNuker::account_login(std::string email, std::string password)
+int CPMNuker::account_login(const std::string& email, const std::string& password)
 {
     cpr::Response response = cpr::Post(
         cpr::Url{"https://api.anasov.ly/cpmnuker/login.php"},
@@ -23,7 +23,7 @@ int CPMNuker::account_login(std::string email, std::string password)
     }
 }
 
-bool CPMNuker::account_register(std::string email, std::string password)
+bool CPMNuker::account_register(const std::string& email, const std::string& password)
 {
     cpr::Response response = cpr::Post(
         cpr::Url{"https://api.anasov.ly/cpmnuker/register.php"},
@@ -42,7 +42,7 @@ bool CPMNuker::account_register(std::string email, std::string password)
     }
 }
 
-bool CPMNuker::account_change_data(std::string vname, std::string vvalue)
+bool CPMNuker::account_change_data(const std::string& vname, const std::string& vvalue)
 {
     cpr::Response response = cpr::Post(
         cpr::Url{"https://api.anasov.ly/cpmnuker/save_data.php"},
@@ -51,6 +51,24 @@ bool CPMNuker::account_change_data(std::string vname, std::string vvalue)
             {"account_auth", this->auth_token},
             {"var_name", vname},
             {"var_value", vvalue}
+        }
+    );
+    json data = json::parse(response.text);
+    if(data["ok"]){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool CPMNuker::account_save_car(const std::string& car_id)
+{
+    cpr::Response response = cpr::Post(
+        cpr::Url{"https://api.anasov.ly/cpmnuker/save_car.php"},
+        cpr::Parameters{{"key", this->access_key}},
+        cpr::Payload{
+            {"account_auth", this->auth_token},
+            {"car_id", car_id}
         }
     );
     json data = json::parse(response.text);

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <termcolor/termcolor.hpp>
+#include "include/progressbar.hpp"
 #include "include/cpmnuker.hpp"
 #include "include/asker.hpp"
 
@@ -111,8 +112,9 @@ int main()
             std::cout << termcolor::bold << termcolor::cyan << "[3]: King Rank." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[4]: Change ID." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[5]: Rainbow Name." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[6]: Delete Account." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[7]: New Account." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[6]: Unlock All Cars." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[7]: Delete Account." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[8]: New Account." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::red << "[0]: Exit." << termcolor::reset << std::endl;
             std::cout << std::endl;
             std::string service = asker::input("Select a Service [1-7]:", true);
@@ -210,6 +212,34 @@ int main()
                 }
             }
             case 6: {
+                std::cout << termcolor::bold << termcolor::red << "! King Rank will not work if you still logged in." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::cyan << "↺ Giving you a King Rank ..." << termcolor::reset << std::endl;
+                progressbar bar(202);
+                int service_failed = 0;
+                int service_success = 0;
+                for(int i = 0; i < 202; i++){
+                    bool service_status = cpm->account_save_car(std::to_string(i));
+                    if(service_status) service_success++;
+                    else service_failed++;
+                    bar.update();
+                }
+                if(service_failed != 0 && service_success == 0) {
+                    std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
+                    std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                    csleep(1);
+                    continue;
+                } else if(service_failed == 0 && service_success != 0){
+                    std::cout << termcolor::bold << termcolor::green << "SUCCESS." << termcolor::reset << std::endl << std::endl;
+                    csleep(1);
+                    continue;
+                } else {
+                    std::cout << termcolor::bold << termcolor::yellow << "SUCCESS [NOT ALL CARS]." << termcolor::reset << std::endl;
+                    std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                    csleep(1);
+                    continue;
+                }
+            }
+            case 7: {
                 std::cout << termcolor::bold << termcolor::red << "! After deleting your account there is no going back !!!." << termcolor::reset << std::endl;
                 bool answer1 = asker::confirm("Are you sure ?");
                 if(answer1){
@@ -233,7 +263,7 @@ int main()
                     continue;
                 }
             }
-            case 7: {
+            case 8: {
                 std::cout << termcolor::bold << termcolor::cyan << "✶ Enter Your New Accounts Info" << termcolor::reset << std::endl;
                 std::string account_email = asker::input("Account Email:", true);
                 std::string account_password = asker::input("Account Password:", true);
