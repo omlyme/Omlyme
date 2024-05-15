@@ -20,11 +20,12 @@ namespace asker
 namespace color
 {
 const std::string red = "\033[31m";
-const std::string blue = "\033[34m";
+const std::string blue = "\033[36m";// '\033[34m'
 const std::string green = "\033[32m";
 const std::string yellow = "\033[33m";
 const std::string white = "\033[37m";
 const std::string grey = "\033[30;1m";
+const std::string bold = "\033[1m";
 const std::string reset = "\033[0m";
 }
 namespace _utils
@@ -81,7 +82,7 @@ inline void printMsg(const std::string &msg)
 {
     // clear previous message
     std::cout << _utils::clearLn(_utils::EOL);
-    std::cout << color::green << "? " << color::blue << msg + " " << color::reset;
+    std::cout << color::bold <<  color::green << ">> " << color::blue << msg + " " << color::reset;
 }
 
 //* hide cursor
@@ -180,7 +181,7 @@ inline bool confirm(const std::string &msg)
 {
     bool res = true;
     std::string ans;
-    ans = input(msg + " (y/n) ");
+    ans = input(msg + " [Yes/No] ");
     if (ans[0] != 'y' && ans[0] != 'Y' && ans[0] != '\0') {
         res = false;
     }
@@ -275,7 +276,7 @@ inline std::vector<std::string> checkList(const std::string &msg, const std::str
         std::cout << _utils::clearLn(_utils::EOL) << _utils::mvUp(1);
     }
     std::cout << _utils::clearLn(_utils::EOL); //clear message line
-    std::cout << color::green << "? " << color::blue << msg << " " << color::reset;
+    std::cout << color::green << ">> " << color::blue << msg << " " << color::reset;
     std::cout << "[";
     for (int i = 0; i < ans.size(); i++) {
         std::cout << "{" << ans[i] << "}";
@@ -348,7 +349,7 @@ inline std::string selectList(const std::string &msg, const std::string (&option
         std::cout << _utils::clearLn(_utils::EOL) << _utils::mvUp(1);
     }
     std::cout << _utils::clearLn(_utils::EOL); //clear message line
-    std::cout << color::green << "? " << color::blue << msg << " " << color::reset << ans << "\n";
+    std::cout << color::green << ">> " << color::blue << msg << " " << color::reset << ans << "\n";
     _utils::rawModeOff();
     return ans;
 }

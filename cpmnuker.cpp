@@ -7,7 +7,7 @@ CPMNuker::CPMNuker(const std::string& access_key) {
 int CPMNuker::account_login(const std::string& email, const std::string& password)
 {
     cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/login.php"},
+        cpr::Url{this->BASE_URL + "/account_login"},
         cpr::Parameters{{"key", this->access_key}},
         cpr::Payload{
             {"account_email", email},
@@ -26,7 +26,7 @@ int CPMNuker::account_login(const std::string& email, const std::string& passwor
 bool CPMNuker::account_register(const std::string& email, const std::string& password)
 {
     cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/register.php"},
+        cpr::Url{this->BASE_URL + "/account_register"},
         cpr::Parameters{{"key", this->access_key}},
         cpr::Payload{
             {"account_email", email},
@@ -42,10 +42,25 @@ bool CPMNuker::account_register(const std::string& email, const std::string& pas
     }
 }
 
-bool CPMNuker::account_change_data(const std::string& vname, const std::string& vvalue)
+bool CPMNuker::account_delete()
 {
     cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/save_data.php"},
+        cpr::Url{this->BASE_URL + "/account_delete"},
+        cpr::Parameters{{"key", this->access_key}},
+        cpr::Payload{{"account_auth", this->auth_token}}
+        );
+    json data = json::parse(response.text);
+    if(data["ok"]){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool CPMNuker::account_set_data(const std::string& vname, const std::string& vvalue)
+{
+    cpr::Response response = cpr::Post(
+        cpr::Url{this->BASE_URL + "/set_data"},
         cpr::Parameters{{"key", this->access_key}},
         cpr::Payload{
             {"account_auth", this->auth_token},
@@ -61,45 +76,41 @@ bool CPMNuker::account_change_data(const std::string& vname, const std::string& 
     }
 }
 
+json CPMNuker::account_get_data()
+{
+    cpr::Response response = cpr::Post(
+        cpr::Url{this->BASE_URL + "/get_data"},
+        cpr::Parameters{{"key", this->access_key}},
+        cpr::Payload{{"account_auth", this->auth_token}}
+        );
+    json data = json::parse(response.text);
+    return data["data"];
+}
+
+bool CPMNuker::account_set_rank()
+{
+    cpr::Response response = cpr::Post(
+        cpr::Url{this->BASE_URL + "/set_rank"},
+        cpr::Parameters{{"key", this->access_key}},
+        cpr::Payload{{"account_auth", this->auth_token}}
+        );
+    json data = json::parse(response.text);
+    if(data["ok"]){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 bool CPMNuker::account_save_car(const std::string& car_id)
 {
     cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/save_car.php"},
+        cpr::Url{this->BASE_URL + "/save_car.php"},
         cpr::Parameters{{"key", this->access_key}},
         cpr::Payload{
             {"account_auth", this->auth_token},
             {"car_id", car_id}
         }
-    );
-    json data = json::parse(response.text);
-    if(data["ok"]){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool CPMNuker::account_change_rating()
-{
-    cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/save_rating.php"},
-        cpr::Parameters{{"key", this->access_key}},
-        cpr::Payload{{"account_auth", this->auth_token}}
-    );
-    json data = json::parse(response.text);
-    if(data["ok"]){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool CPMNuker::account_delete()
-{
-    cpr::Response response = cpr::Post(
-        cpr::Url{"https://api.anasov.ly/cpmnuker/delete.php"},
-        cpr::Parameters{{"key", this->access_key}},
-        cpr::Payload{{"account_auth", this->auth_token}}
     );
     json data = json::parse(response.text);
     if(data["ok"]){
