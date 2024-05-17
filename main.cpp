@@ -66,7 +66,7 @@ void loadData(CPMNuker* cpm)
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Money   : " << termcolor::white << money << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Coins   : " << termcolor::white << coin << termcolor::reset << std::endl << std::endl;
 }
-//REGPZI9JOF
+
 void loadKeyData(CPMNuker* cpm)
 {
     json data = cpm->access_key_data();
