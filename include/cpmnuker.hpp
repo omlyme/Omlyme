@@ -18,6 +18,7 @@ using json = nlohmann::json;
     106: MISSING_PASSWORD
     107: INVALID_EMAIL
     108: MISSING_EMAIL
+    109: ACCESS_KEY_BLOCKED
     404: UNKNOWN_ERROR
 **/
 
@@ -29,10 +30,11 @@ public:
     int account_login(const std::string& email, const std::string& password);
     bool account_register(const std::string& email, const std::string& password);
     bool account_delete();
-    bool account_set_data(const std::string& vname, const std::string& vvalue);
+    bool account_set_data(json content);
     json account_get_data();
     bool account_set_rank();
     bool account_save_car(const std::string& car_id);
+    json access_key_data();
     enum RESPONSE {
         SUCCESSFUL = 0,
         EMAIL_NOT_FOUND = 100,
@@ -44,6 +46,7 @@ public:
         MISSING_PASSWORD = 106,
         INVALID_EMAIL = 107,
         MISSING_EMAIL = 108,
+        ACCESS_KEY_BLOCKED = 109,
         UNKNOWN_ERROR = 404
     };
     enum SERVICE {
@@ -60,7 +63,7 @@ public:
     };
 
 private:
-    std::string BASE_URL = "http://127.0.0.1:5000";
+    std::string BASE_URL = "https://api.anasov.ly/v1/cpmnuker";
     std::string access_key;
     std::string auth_token;
 

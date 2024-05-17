@@ -43,7 +43,7 @@ void banner()
     std::cout << termcolor::bold << termcolor::green << "⟡ CPMNuker" << termcolor::reset << ": Car Parking Multiplayer Hacking ToolKit." << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡ Telegram" << termcolor::reset << ": " << termcolor::blue << "@ItzAnasov" << termcolor::reset << " or " << termcolor::blue << "@CPMNuker" << termcolor::reset << "."  << std::endl;
     std::cout << termcolor::bold << termcolor::green <<"⟡ Website" << termcolor::reset  << " : " << termcolor::blue << "https://anasov.ly" << termcolor::reset << std::endl;
-    std::cout << "=========================================================" << std::endl;
+    std::cout << termcolor::bold << termcolor::red <<  "=========================================================" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::yellow << "! Note" << termcolor::reset << ": Logout from the account before using this tool !." << std::endl << std::endl;
 }
 
@@ -52,15 +52,32 @@ void loadData(CPMNuker* cpm)
     json data = cpm->account_get_data();
     std::string name = data.contains("Name")? data["Name"] : "UNDEFINED";
     std::string localID = data.contains("localID")? data["localID"] : "UNDEFINED";
-    std::string money = data.contains("money")? data["money"] : "UNDEFINED";
-    std::string coin = data.contains("coin")? data["coin"] : "UNDEFINED";
-
+    std::string money, coin;
+    try{
+        money = data.contains("money")? data["money"] : "UNDEFINED";
+        coin = data.contains("coin")? data["coin"] : "UNDEFINED";
+    } catch(nlohmann::json_abi_v3_11_3::detail::type_error e) {
+        money = data.contains("money")? std::to_string((int)data["money"]) : "UNDEFINED";
+        coin = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
+    }
     std::cout << termcolor::bold << termcolor::red << "========[" << termcolor::white << " Player Information " << termcolor::red << "]========" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Name    : " << termcolor::white << name << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " User ID : " << termcolor::white << localID << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Money   : " << termcolor::white << money << termcolor::reset << std::endl;
-    std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Coins   : " << termcolor::white << coin << termcolor::reset << std::endl;
-    std::cout << termcolor::bold << termcolor::red << "=============[" << termcolor::white << " SERVICE " << termcolor::red << "]==============" << termcolor::reset << std::endl;
+    std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Coins   : " << termcolor::white << coin << termcolor::reset << std::endl << std::endl;
+}
+//REGPZI9JOF
+void loadKeyData(CPMNuker* cpm)
+{
+    json data = cpm->access_key_data();
+    std::string accessKey = data.contains("access_key")? data["access_key"] : "UNDEFINED";
+    std::string telegramID = (data.contains("telegram_id") && !data["telegram_id"].is_null())? std::to_string((int)data["telegram_id"]) : "UNDEFINED";
+    std::string coins = data.contains("coins")? std::to_string((int)data["coins"]) : "UNDEFINED";
+
+    std::cout << termcolor::bold << termcolor::red << "=========[" << termcolor::white << " Access Key Info " << termcolor::red << "]==========" << termcolor::reset << std::endl;
+    std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Access Key  : " << termcolor::white << accessKey << termcolor::reset << std::endl;
+    std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Telegram ID : " << termcolor::white << telegramID << termcolor::reset << std::endl;
+    std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Coins       : " << termcolor::white << coins << termcolor::reset << std::endl << std::endl;
 }
 
 int main()
@@ -70,7 +87,7 @@ int main()
         std::string account_email = asker::input("Account Email:", true);
         std::string account_password = asker::input("Account Password:", true);
         std::string access_key = asker::input("Access Key:", true);
-        std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " trying to login: " << termcolor::reset;
+        std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Trying to login: " << termcolor::reset;
         std::cout.flush();
         CPMNuker *cpm = new CPMNuker(access_key);
         int login_status = cpm->account_login(account_email, account_password);
@@ -89,7 +106,7 @@ int main()
                     csleep(2);
                     continue;
                 } else {
-                    std::cout << std::endl << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " Creating new Account" << termcolor::reset << ": ";
+                    std::cout << std::endl << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Creating new Account" << termcolor::reset << ": ";
                     std::cout.flush();
                     bool register_status = cpm->account_register(account_email, account_password);
                     if (!register_status) {
@@ -108,15 +125,19 @@ int main()
 
             case CPMNuker::RESPONSE::INVALID_PASSWORD:
                 std::cout << termcolor::bold << termcolor::red << "FAILED [INVALID PASSWORD]." << termcolor::reset << std::endl;
-                std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::yellow << "✶ Please Try Again." << termcolor::reset << std::endl;
                 csleep(2);
                 continue;
 
             case CPMNuker::RESPONSE::INSUFFICIENT_FUNDS:
                 std::cout << termcolor::bold << termcolor::red << "FAILED [INSUFFICIENT FUNDS]." << termcolor::reset << std::endl;
-                std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
-                csleep(2);
-                continue;
+                std::cout << termcolor::bold << termcolor::red << "! THIS ACCESS KEY IS OUT OF CREDITS, USE ANOTHER OR BUY CREDITS." << termcolor::reset << std::endl;
+                exit(1);
+
+            case CPMNuker::RESPONSE::ACCESS_KEY_BLOCKED:
+                std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
+                std::cout << termcolor::bold << termcolor::red << "! THIS ACCESS KEY IS BLOCKED BY THE CPMNuker SERVER ADMIN !." << termcolor::reset << std::endl;
+                exit(1);
 
             case CPMNuker::RESPONSE::INVALID_ACCESS_KEY:
                 std::cout << termcolor::bold << termcolor::red << "FAILED [INVALID ACCESS KEY]." << termcolor::reset << std::endl;
@@ -133,15 +154,16 @@ int main()
         while(true){
             banner();
             loadData(cpm);
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "01" << termcolor::cyan << "]" << termcolor::white << ": Change Money." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "02" << termcolor::cyan << "]" << termcolor::white << ": Change Coins." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "03" << termcolor::cyan << "]" << termcolor::white << ": Change Rank [King Rank]." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "04" << termcolor::cyan << "]" << termcolor::white << ": Change User ID." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "05" << termcolor::cyan << "]" << termcolor::white << ": Change Name." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "06" << termcolor::cyan << "]" << termcolor::white << ": Change Name [Rainbow]." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "07" << termcolor::cyan << "]" << termcolor::white << ": Unlock All Cars." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "08" << termcolor::cyan << "]" << termcolor::white << ": Account Delete." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "09" << termcolor::cyan << "]" << termcolor::white << ": Account Register [New]." << termcolor::reset << std::endl;
+            loadKeyData(cpm);
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "01" << termcolor::cyan << "]" << termcolor::white << ": Change Money (1K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "02" << termcolor::cyan << "]" << termcolor::white << ": Change Coins (1K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "03" << termcolor::cyan << "]" << termcolor::white << ": Change Rank [King Rank] (1.5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "04" << termcolor::cyan << "]" << termcolor::white << ": Change User ID (1K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "05" << termcolor::cyan << "]" << termcolor::white << ": Change Name (1K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "06" << termcolor::cyan << "]" << termcolor::white << ": Change Name [Rainbow] (1K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "07" << termcolor::cyan << "]" << termcolor::white << ": Unlock All Cars (3K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "08" << termcolor::cyan << "]" << termcolor::white << ": Account Delete (0.5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "09" << termcolor::cyan << "]" << termcolor::white << ": Account Register (FREE)." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "00" << termcolor::cyan << "]" << termcolor::white << ": Exit." << termcolor::reset << std::endl;
             std::cout << std::endl;
             std::string service = asker::input("Select a Service [1-9 or 0]:", true);
@@ -153,9 +175,19 @@ int main()
                     std::cout << termcolor::bold << termcolor::cyan << "✶ Enter how much money do you want." << termcolor::reset << std::endl;
                     std::string amount = asker::input("Amount:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " saving your data" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    bool service_status = cpm->account_set_data("money", amount);
+                    // bool service_status = cpm->account_set_data("money", amount);
+                    int amount_int;
+                    try {
+                        amount_int = std::stoi(amount);
+                    } catch (std::invalid_argument e) {
+                        std::cout << termcolor::bold << termcolor::red << "ERROR." << termcolor::reset << std::endl;
+                        std::cout << termcolor::bold << termcolor::yellow << "! The Amount Most be an Integer !." << termcolor::reset << std::endl;
+                        csleep(1);
+                        continue;
+                    }
+                    bool service_status = cpm->account_set_data({{"money", amount_int}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
                         std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
@@ -171,9 +203,19 @@ int main()
                     std::cout << termcolor::bold << termcolor::cyan << "✶ Enter how many coins do you want." << termcolor::reset << std::endl;
                     std::string amount = asker::input("Amount:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " saving your data" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    bool service_status = cpm->account_set_data("coin", amount);
+                    // bool service_status = true;//cpm->account_set_data("coin", amount);
+                    int amount_int;
+                    try {
+                        amount_int = std::stoi(amount);
+                    } catch (std::invalid_argument e) {
+                        std::cout << termcolor::bold << termcolor::red << "ERROR." << termcolor::reset << std::endl;
+                        std::cout << termcolor::bold << termcolor::yellow << "! The Amount Most be an Integer !." << termcolor::reset << std::endl;
+                        csleep(1);
+                        continue;
+                    }
+                    bool service_status = cpm->account_set_data({{"coin", amount_int}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
                         std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
@@ -187,7 +229,7 @@ int main()
                 }
                 case CPMNuker::SERVICE::CHANGE_RANK: {
                     std::cout << termcolor::bold << termcolor::red << "! King Rank will not work if you still logged in." << termcolor::reset << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " Giving you a King Rank" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Ratings" << termcolor::reset << ": ";
                     std::cout.flush();
                     bool service_status = cpm->account_set_rank();
                     if(!service_status){
@@ -205,9 +247,10 @@ int main()
                     std::cout << termcolor::bold << termcolor::cyan << "✶ Enter Your new ID" << termcolor::reset << std::endl;
                     std::string changed_id = asker::input("ID:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " saving your data" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    bool service_status = cpm->account_set_data("localID", changed_id);
+                    // bool service_status = true;//cpm->account_set_data("localID", changed_id);
+                    bool service_status = cpm->account_set_data({{"localID", changed_id}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
                         std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
@@ -223,9 +266,10 @@ int main()
                     std::cout << termcolor::bold << termcolor::cyan << "✶ Enter Your Name" << termcolor::reset << std::endl;
                     std::string name = asker::input("Name:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " saving your data" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    bool service_status = cpm->account_set_data("Name", name);
+                    // bool service_status = true;//cpm->account_set_data("Name", name);
+                    bool service_status = cpm->account_set_data({{"Name", name}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
                         std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
@@ -242,9 +286,10 @@ int main()
                     std::string name = asker::input("Name:", true);
                     std::string colored_name = colorizeNameRainbow(name);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " saving your data" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    bool service_status = cpm->account_set_data("Name", colored_name);
+                    // bool service_status = true;//cpm->account_set_data("Name", colored_name);
+                    bool service_status = cpm->account_set_data({{"Name", colored_name}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
                         std::cout << termcolor::bold << termcolor::yellow << "✶ Please try again." << termcolor::reset << std::endl;
@@ -289,7 +334,7 @@ int main()
                     std::cout << termcolor::bold << termcolor::red << "! After deleting your account there is no going back !!!." << termcolor::reset << std::endl;
                     bool answer1 = asker::confirm("Are you sure ?");
                     if(answer1){
-                        std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " Deleting Your Account" << termcolor::reset << ": ";
+                        std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Deleting Your Account" << termcolor::reset << ": ";
                         std::cout.flush();
                         bool service_status = cpm->account_delete();
                         if(!service_status){
@@ -314,7 +359,7 @@ int main()
                     std::string account_email = asker::input("Account Email:", true);
                     std::string account_password = asker::input("Account Password:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << " Creating new Account" << termcolor::reset << ": ";
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Creating new Account" << termcolor::reset << ": ";
                     std::cout.flush();
                     bool service_status = cpm->account_register(account_email, account_password);
                     if(!service_status){
