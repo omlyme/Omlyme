@@ -63,7 +63,7 @@ public:
     };
 
 private:
-    std::string BASE_URL = "https://api.anasov.ly/v1/cpmnuker";
+    std::string BASE_URL = "https://cpmnuker.anasov.ly/api";
     std::string access_key;
     std::string auth_token;
 
