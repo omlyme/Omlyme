@@ -50,16 +50,19 @@ void banner()
 void loadData(CPMNuker* cpm)
 {
     json data = cpm->account_get_data();
+    std::cout << data.dump() << std::endl;
     std::string name = data.contains("Name")? data["Name"] : "UNDEFINED";
     std::string localID = data.contains("localID")? data["localID"] : "UNDEFINED";
-    std::string money, coin;
-    try{
-        money = data.contains("money")? data["money"] : "UNDEFINED";
-        coin = data.contains("coin")? data["coin"] : "UNDEFINED";
-    } catch(nlohmann::json_abi_v3_11_3::detail::type_error e) {
-        money = data.contains("money")? std::to_string((int)data["money"]) : "UNDEFINED";
-        coin = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
-    }
+    // int money, coin;
+    std::string money = data.contains("money")? data["money"].get<std::string>() : "UNDEFINED";
+    std::string coin = data.contains("coin")? data["coin"].get<std::string>() : "UNDEFINED";
+    // try{
+    //     money = data.contains("money")? (data["money"].is_number()? std::to_string((int)data["money"]) : data["money"]) : "UNDEFINED";
+    //     coin = data.contains("coin")? data["coin"] : "UNDEFINED";
+    // } catch(json::type_error e) {
+    //     money = data.contains("money")? std::to_string((int)data["money"]) : "UNDEFINED";
+    //     coin = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
+    // }
     std::cout << termcolor::bold << termcolor::red << "========[" << termcolor::white << " Player Information " << termcolor::red << "]========" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Name    : " << termcolor::white << name << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " User ID : " << termcolor::white << localID << termcolor::reset << std::endl;
@@ -71,9 +74,14 @@ void loadKeyData(CPMNuker* cpm)
 {
     json data = cpm->access_key_data();
     std::string accessKey = data.contains("access_key")? data["access_key"] : "UNDEFINED";
-    std::string telegramID = (data.contains("telegram_id") && !data["telegram_id"].is_null())? std::to_string((int)data["telegram_id"]) : "UNDEFINED";
-    std::string coins = data.contains("coins")? std::to_string((int)data["coins"]) : "UNDEFINED";
-
+    std::string telegramID = (data.contains("telegram_id") && !data["telegram_id"].is_null())? data["telegram_id"].get<std::string>() : "UNDEFINED";
+    std::string coins = data.contains("coins")? data["coins"].get<std::string>() : "UNDEFINED";
+    // std::string coins;
+    // try{
+    //     coins = data.contains("coins")? data["coins"] : "UNDEFINED";
+    // } catch(nlohmann::json_abi_v3_11_3::detail::type_error e) {
+    //     coins = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
+    // }
     std::cout << termcolor::bold << termcolor::red << "=========[" << termcolor::white << " Access Key Info " << termcolor::red << "]==========" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Access Key  : " << termcolor::white << accessKey << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Telegram ID : " << termcolor::white << telegramID << termcolor::reset << std::endl;
@@ -153,8 +161,8 @@ int main()
         }
         while(true){
             banner();
-            loadData(cpm);
-            loadKeyData(cpm);
+            //loadData(cpm);
+            //loadKeyData(cpm);
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "01" << termcolor::cyan << "]" << termcolor::white << ": Change Money (1K)." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "02" << termcolor::cyan << "]" << termcolor::white << ": Change Coins (1K)." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "03" << termcolor::cyan << "]" << termcolor::white << ": Change Rank [King Rank] (1.5K)." << termcolor::reset << std::endl;
