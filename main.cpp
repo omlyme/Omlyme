@@ -50,19 +50,10 @@ void banner()
 void loadData(CPMNuker* cpm)
 {
     json data = cpm->account_get_data();
-    std::cout << data.dump() << std::endl;
     std::string name = data.contains("Name")? data["Name"] : "UNDEFINED";
     std::string localID = data.contains("localID")? data["localID"] : "UNDEFINED";
-    // int money, coin;
-    std::string money = data.contains("money")? data["money"].get<std::string>() : "UNDEFINED";
-    std::string coin = data.contains("coin")? data["coin"].get<std::string>() : "UNDEFINED";
-    // try{
-    //     money = data.contains("money")? (data["money"].is_number()? std::to_string((int)data["money"]) : data["money"]) : "UNDEFINED";
-    //     coin = data.contains("coin")? data["coin"] : "UNDEFINED";
-    // } catch(json::type_error e) {
-    //     money = data.contains("money")? std::to_string((int)data["money"]) : "UNDEFINED";
-    //     coin = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
-    // }
+    std::string money = data.contains("money")? std::to_string(data["money"].get<int>()) : "UNDEFINED";
+    std::string coin = data.contains("coin")? std::to_string(data["coin"].get<int>()) : "UNDEFINED";
     std::cout << termcolor::bold << termcolor::red << "========[" << termcolor::white << " Player Information " << termcolor::red << "]========" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Name    : " << termcolor::white << name << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " User ID : " << termcolor::white << localID << termcolor::reset << std::endl;
@@ -74,14 +65,8 @@ void loadKeyData(CPMNuker* cpm)
 {
     json data = cpm->access_key_data();
     std::string accessKey = data.contains("access_key")? data["access_key"] : "UNDEFINED";
-    std::string telegramID = (data.contains("telegram_id") && !data["telegram_id"].is_null())? data["telegram_id"].get<std::string>() : "UNDEFINED";
-    std::string coins = data.contains("coins")? data["coins"].get<std::string>() : "UNDEFINED";
-    // std::string coins;
-    // try{
-    //     coins = data.contains("coins")? data["coins"] : "UNDEFINED";
-    // } catch(nlohmann::json_abi_v3_11_3::detail::type_error e) {
-    //     coins = data.contains("coin")? std::to_string((int)data["coin"]) : "UNDEFINED";
-    // }
+    std::string telegramID = data.contains("telegram_id")? std::to_string(data["telegram_id"].get<int>()) : "UNDEFINED";
+    std::string coins = data.contains("coins")? std::to_string(data["coins"].get<int>()) : "UNDEFINED";
     std::cout << termcolor::bold << termcolor::red << "=========[" << termcolor::white << " Access Key Info " << termcolor::red << "]==========" << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Access Key  : " << termcolor::white << accessKey << termcolor::reset << std::endl;
     std::cout << termcolor::bold << termcolor::green << "⟡" << termcolor::cyan << " Telegram ID : " << termcolor::white << telegramID << termcolor::reset << std::endl;
@@ -161,16 +146,16 @@ int main()
         }
         while(true){
             banner();
-            //loadData(cpm);
-            //loadKeyData(cpm);
+            loadData(cpm);
+            loadKeyData(cpm);
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "01" << termcolor::cyan << "]" << termcolor::white << ": Change Money (1K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "02" << termcolor::cyan << "]" << termcolor::white << ": Change Coins (1K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "03" << termcolor::cyan << "]" << termcolor::white << ": Change Rank [King Rank] (1.5K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "04" << termcolor::cyan << "]" << termcolor::white << ": Change User ID (1K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "05" << termcolor::cyan << "]" << termcolor::white << ": Change Name (1K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "06" << termcolor::cyan << "]" << termcolor::white << ": Change Name [Rainbow] (1K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "07" << termcolor::cyan << "]" << termcolor::white << ": Unlock All Cars (3K)." << termcolor::reset << std::endl;
-            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "08" << termcolor::cyan << "]" << termcolor::white << ": Account Delete (0.5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "02" << termcolor::cyan << "]" << termcolor::white << ": Change Coins (3.5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "03" << termcolor::cyan << "]" << termcolor::white << ": Change Rank [King Rank] (4K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "04" << termcolor::cyan << "]" << termcolor::white << ": Change User ID (3.5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "05" << termcolor::cyan << "]" << termcolor::white << ": Change Name (100)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "06" << termcolor::cyan << "]" << termcolor::white << ": Change Name [Rainbow] (500)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "07" << termcolor::cyan << "]" << termcolor::white << ": Unlock All Cars (5K)." << termcolor::reset << std::endl;
+            std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "08" << termcolor::cyan << "]" << termcolor::white << ": Account Delete (FREE)." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "09" << termcolor::cyan << "]" << termcolor::white << ": Account Register (FREE)." << termcolor::reset << std::endl;
             std::cout << termcolor::bold << termcolor::cyan << "[" << termcolor::green << "00" << termcolor::cyan << "]" << termcolor::white << ": Exit." << termcolor::reset << std::endl;
             std::cout << std::endl;
@@ -183,9 +168,6 @@ int main()
                     std::cout << termcolor::bold << termcolor::cyan << "✶ Enter how much money do you want." << termcolor::reset << std::endl;
                     std::string amount = asker::input("Amount:", true);
                     std::cout << std::endl;
-                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
-                    std::cout.flush();
-                    // bool service_status = cpm->account_set_data("money", amount);
                     int amount_int;
                     try {
                         amount_int = std::stoi(amount);
@@ -195,6 +177,8 @@ int main()
                         csleep(1);
                         continue;
                     }
+                    std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
+                    std::cout.flush();
                     bool service_status = cpm->account_set_data({{"money", amount_int}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
@@ -388,11 +372,9 @@ int main()
                         }
                     }
                 }
-
                 case CPMNuker::SERVICE::EXIT:
                     std::cout << termcolor::bold << termcolor::yellow << "✴ Thank You for using our tool, please join our telegram channel: " << termcolor::blue << "@CPMNuker" << termcolor::reset << "." << std::endl;
                     break;
-
                 default:
                     continue;
             }
