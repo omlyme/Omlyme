@@ -214,8 +214,8 @@ if __name__ == "__main__":
                     else: continue
                 case 9: # Account Register
                     console.print("[bold cyan]✶ Registring new Account.[/bold cyan]")
-                    acc2_email = Prompt.ask("[bold]➤ Account Email[/bold]", password=False)
-                    acc2_password = Prompt.ask("[bold]➤ Account Password[/bold]", password=True)
+                    acc2_email = prompt_valid_value("[bold]➤ Account Email[/bold]", "Email", password=False)
+                    acc2_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=True)
                     console.print("[bold cyan]↺ Creating new Account[/bold cyan]: ", end=None)
                     status = cpm.register(acc2_email, acc2_password)
                     if status == 0:
