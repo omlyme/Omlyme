@@ -115,12 +115,12 @@ if __name__ == "__main__":
                     break
                 case 1: # Increase Money
                     console.print("[bold cyan]✶ Insert how much money do you want.[/bold cyan]")
-                    amount = Prompt.ask("[bold]➤ Amount[/bold]")
+                    amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
                     console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
                     if cpm.set_player_data({"money": amount}):
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -130,12 +130,12 @@ if __name__ == "__main__":
                         continue
                 case 2: # Increase Coins
                     console.print("[bold cyan]✶ Insert how much coins do you want.[/bold cyan]")
-                    amount = Prompt.ask("[bold]➤ Amount[/bold]")
+                    amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
                     console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
                     if cpm.set_player_data({"coin": amount}):
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
                     if cpm.set_player_rank():
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -163,7 +163,7 @@ if __name__ == "__main__":
                     if cpm.set_player_data({"localID": new_id}):
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -178,7 +178,7 @@ if __name__ == "__main__":
                     if cpm.set_player_data({"name": new_name}):
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -193,7 +193,7 @@ if __name__ == "__main__":
                     if cpm.set_player_data({"name": rainbow_gradient_string(new_name)}):
                         console.print("[bold green]SUCCESSFUL.[/bold green]")
                         console.print("==================================")
-                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"])
+                        answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
                         if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                         else: continue
                     else:
@@ -205,7 +205,7 @@ if __name__ == "__main__":
                     continue
                 case 8: # Account Delete
                     console.print("[bold cyan]✶ After deleting your account there is no going back !!.[/bold cyan]")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Delete this Account ?![/bold cyan]", choices=["y", "n"])
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Delete this Account ?![/bold cyan]", choices=["y", "n"], default="n")
                     if answ == "y":
                         cpm.delete()
                         console.print("[bold cyan]↺ Deleting Your Account[/bold cyan]: [bold green]SUCCESSFUL.[/bold green].")
