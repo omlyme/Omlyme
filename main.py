@@ -31,7 +31,7 @@ def banner(console):
 
 def load_player_data(cpm):
     data = cpm.get_player_data().get('data')
-    console.print("================[ PLAYER DETAILS ]===================")
+    console.print("[bold][red]========[/red][ PLAYER DETAILS ][red]========[/red][/bold]")
     console.print(f"[bold green] Name   [/bold green]: { (data.get('Name') if 'Name' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')  if 'localID' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] Money  [/bold green]: { (data.get('money')  if 'money' in data else 'UNDEFINED') }.")
@@ -39,7 +39,7 @@ def load_player_data(cpm):
 
 def load_key_data(cpm):
     data = cpm.get_key_data()
-    console.print("==============[ ACCESS KEY DETAILS ]=================")
+    console.print("========[ ACCESS KEY DETAILS ]========")
     console.print(f"[bold green] Access Key [/bold green]: { data.get('access_key') }.")
     console.print(f"[bold green] Telegram ID[/bold green]: { data.get('telegram_id') }.")
     console.print(f"[bold green] Credits    [/bold green]: { data.get('coins') }.", end="\n\n")
@@ -69,6 +69,7 @@ if __name__ == "__main__":
         acc_email = Prompt.ask("[bold]➤ Account Email[/bold]", password=False)
         acc_password = Prompt.ask("[bold]➤ Account Password[/bold]", password=True)
         acc_access_key = Prompt.ask("[bold]➤ Access Key[/bold]", password=False)
+        if acc_email == "" or acc_password == "" or acc_access_key == "": continue
         console.print("[bold cyan]↻ Trying to Login[/bold cyan]: ", end=None)
         cpm = CPMNuker(acc_access_key)
         login_response = cpm.login(acc_email, acc_password)
