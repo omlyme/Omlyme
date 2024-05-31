@@ -116,7 +116,7 @@ if __name__ == "__main__":
             console.print("[bold cyan](08): Account Delete[/bold cyan]")
             console.print("[bold cyan](09): Account Register[/bold cyan]")
             console.print("[bold cyan](00): Exit[/bold cyan]", end="\n\n")
-            service = IntPrompt.ask("[bold]➤ Select a Service[/bold]", choices=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+            service = IntPrompt.ask("[bold]➤ Select a Service [red][0-9][/red][/bold]", choices=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], show_choices=False)
             if service == 0: # Exit
                 console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
             elif service == 1: # Increase Money
