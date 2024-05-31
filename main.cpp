@@ -1,6 +1,5 @@
 #include <iostream>
 #include <termcolor/termcolor.hpp>
-#include "include/progressbar.hpp"
 #include "include/cpmnuker.hpp"
 #include "include/asker.hpp"
 
@@ -197,7 +196,6 @@ int main()
                     std::cout << std::endl;
                     std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    // bool service_status = true;//cpm->account_set_data("coin", amount);
                     int amount_int;
                     try {
                         amount_int = std::stoi(amount);
@@ -241,7 +239,6 @@ int main()
                     std::cout << std::endl;
                     std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    // bool service_status = true;//cpm->account_set_data("localID", changed_id);
                     bool service_status = cpm->account_set_data({{"localID", changed_id}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
@@ -260,7 +257,6 @@ int main()
                     std::cout << std::endl;
                     std::cout << termcolor::bold << termcolor::green << "↺" << termcolor::cyan << "  Saving Data" << termcolor::reset << ": ";
                     std::cout.flush();
-                    // bool service_status = true;//cpm->account_set_data("Name", name);
                     bool service_status = cpm->account_set_data({{"Name", name}});
                     if(!service_status){
                         std::cout << termcolor::bold << termcolor::red << "FAILED." << termcolor::reset << std::endl;
