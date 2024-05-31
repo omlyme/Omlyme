@@ -21,9 +21,9 @@ def signal_handler(sig, frame):
 
 def banner(console):
     os.system('cls' if os.name == 'nt' else 'clear')
-    console.print("[bold green]♕ CPMNuker[/bold green]: Car Parking Multiplayer Hacking ToolKit.")
+    console.print("[bold green]♕ CPMNuker[/bold green]: Car Parking Multiplayer Hacking Tool.")
     console.print(f"[bold green]♕ Telegram[/bold green]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue] or [bold blue]@{__GROUP_USERNAME__}[/bold blue].")
-    console.print("=====================================================")
+    console.print("==================================================")
     console.print("[bold yellow]! Note[/bold yellow]: Logout from CPM before using this tool !.", end="\n\n")
 
 def load_player_data(cpm):
