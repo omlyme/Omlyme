@@ -5,18 +5,15 @@
 # Proprietary and confidential
 # Written by Anasov <me@anasov.ly>, 05, May, 2024.
 
-from email.policy import default
 import random
 from time import sleep
-import json, os, signal, sys
-from tracemalloc import start
+import os, signal, sys
 from rich.console import Console
 from rich.prompt import Prompt, IntPrompt
 from cpmnuker import CPMNuker
 
-
-__CHANNEL_USERNAME__    = "CPMNuker"
-__GROUP_USERNAME__      = "CPMNukerChat"
+__CHANNEL_USERNAME__ = "CPMNuker"
+__GROUP_USERNAME__   = "CPMNukerChat"
 
 def signal_handler(sig, frame):
     print("\n Bye Bye...")
@@ -27,7 +24,7 @@ def banner(console):
     console.print("[bold green]♕ CPMNuker[/bold green]: Car Parking Multiplayer Hacking ToolKit.")
     console.print(f"[bold green]♕ Telegram[/bold green]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue] or [bold blue]@{__GROUP_USERNAME__}[/bold blue].")
     console.print("=====================================================")
-    console.print("[bold yellow]! Note[/bold yellow]: Logout from the account before using this tool !.", end="\n\n")
+    console.print("[bold yellow]! Note[/bold yellow]: Logout from CPM before using this tool !.", end="\n\n")
 
 def load_player_data(cpm):
     data = cpm.get_player_data().get('data')
@@ -39,10 +36,18 @@ def load_player_data(cpm):
 
 def load_key_data(cpm):
     data = cpm.get_key_data()
-    console.print("========[ ACCESS KEY DETAILS ]========")
+    console.print("[bold][red]========[/red][ ACCESS KEY DETAILS ][red]========[/red][/bold]")
     console.print(f"[bold green] Access Key [/bold green]: { data.get('access_key') }.")
     console.print(f"[bold green] Telegram ID[/bold green]: { data.get('telegram_id') }.")
     console.print(f"[bold green] Credits    [/bold green]: { data.get('coins') }.", end="\n\n")
+
+def prompt_valid_value(content, tag, password=False):
+    while True:
+        value = Prompt.ask(content, password=password)
+        if not value or value.isspace():
+            print(f"{tag} cannot be empty or just spaces. Please try again.")
+        else:
+            return value
 
 def interpolate_color(start_color, end_color, fraction):
     start_rgb = tuple(int(start_color[i:i+2], 16) for i in (1, 3, 5))
@@ -66,49 +71,29 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     while True:
         banner(console)
-        acc_email = Prompt.ask("[bold]➤ Account Email[/bold]", password=False)
-        acc_password = Prompt.ask("[bold]➤ Account Password[/bold]", password=True)
-        acc_access_key = Prompt.ask("[bold]➤ Access Key[/bold]", password=False)
-        if acc_email == "" or acc_password == "" or acc_access_key == "": continue
+        acc_email = prompt_valid_value("[bold]➤ Account Email[/bold]", "Email", password=False)
+        acc_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=True)
+        acc_access_key = prompt_valid_value("[bold]➤ Access Key[/bold]", "Access Key", password=False)
         console.print("[bold cyan]↻ Trying to Login[/bold cyan]: ", end=None)
         cpm = CPMNuker(acc_access_key)
         login_response = cpm.login(acc_email, acc_password)
-        match login_response:
-            case 0:
-                print("SUCCESSFUL.")
-                sleep(1)
-            case 100:
-                print("EMAIL NOT FOUND.")
-                sleep(1)
-                continue
-            case 101:
-                print("INVALID PASSWORD.")
-                sleep(1)
-                continue
-            case 103:
-                print("INVALID ACCESS KEY.")
-                sleep(1)
-                continue
-            case 106:
-                print("MISSING PASSWORD.")
-                sleep(1)
-                continue
-            case 107:
-                print("INVALID EMAIL.")
-                sleep(1)
-                continue
-            case 108:
-                print("MISSING EMAIL.")
-                sleep(1)
-                continue
-            case 109:
-                print("ACCESS KEY BLOCKED.")
-                sleep(1)
-                continue
-            case _:
-                print("UNKNOWN ERROR.")
-                sleep(1)
-                continue
+        if login_response != 0:
+            if login_response == 100:
+                console.print("[bold red]ACCOUNT NOT FOUND[/bold red].")
+                sleep(2)
+            elif login_response == 101:
+                console.print("[bold red]WRONG PASSWORD[/bold red].")
+                sleep(2)
+            elif login_response == 103:
+                console.print("[bold red]INVALID ACCESS KEY[/bold red].")
+                sleep(2)
+            else:
+                console.print("[bold red]TRY AGAIN[/bold red].")
+                console.print("[bold yellow]! Note:[/bold yellow]: make sure you filled out the fields !.")
+                sleep(2)
+        else:
+            console.print("[bold green]SUCCESSFUL[/bold green].")
+            sleep(2)
         while True:
             banner(console)
             load_player_data(cpm)
