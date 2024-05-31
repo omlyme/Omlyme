@@ -40,4 +40,3 @@ python main.py
     - Download python3 form [python.org](https://www.python.org/downloads/).
     - if **pip** is not in **PATH** use: `py -3 -m pip install -r requirements.txt`
     - `py -3 main.py`
->>>>>>> dev
