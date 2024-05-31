@@ -7,13 +7,9 @@ Car Parking Multiplayer Hacking ToolKit
 # installation:
 - `git clone https://github.com/CPMNuker/CPMNuker.git`
 - `cd ./CPMNuker`
-- `cmake ..`
-- `make`
+- `pip install -r ./requirements.txt`
+- `python main.py`
 
 # update:
-- `cp CPMNuker`
-- `rm -rf build`
+- `cd ./CPMNuker`
 - `git pull`
-- `mkdir .build && cd build`
-- `cmake ..`
-- `make`
