@@ -28,11 +28,19 @@ def banner(console):
 
 def load_player_data(cpm):
     data = cpm.get_player_data().get('data')
+    tca = 0
+    if 'carIDnStatus' in data:
+        carIDnStatus = data.get('carIDnStatus')
+        if 'carGeneratedIDs' in carIDnStatus:
+            carGeneratedIDs = carIDnStatus.get('carGeneratedIDs')
+            for car in carGeneratedIDs:
+                if car != "" and car != None: tca += 1
     console.print("[bold][red]========[/red][ PLAYER DETAILS ][red]========[/red][/bold]")
-    console.print(f"[bold green] Name   [/bold green]: { (data.get('Name') if 'Name' in data else 'UNDEFINED') }.")
-    console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')  if 'localID' in data else 'UNDEFINED') }.")
-    console.print(f"[bold green] Money  [/bold green]: { (data.get('money')  if 'money' in data else 'UNDEFINED') }.")
-    console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')  if 'coin' in data else 'UNDEFINED') }.", end="\n\n")
+    console.print(f"[bold green] Name   [/bold green]: { (data.get('Name')      if 'Name' in data else 'UNDEFINED') }.")
+    console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')   if 'localID' in data else 'UNDEFINED') }.")
+    console.print(f"[bold green] Money  [/bold green]: { (data.get('money')     if 'money' in data else 'UNDEFINED') }.")
+    console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')      if 'coin' in data else 'UNDEFINED') }.")
+    console.print(f"[bold green] Cars   [/bold green]: { ('UNDEFINED'           if tca == 0 else tca) }.", end="\n\n")
 
 def load_key_data(cpm):
     data = cpm.get_key_data()
