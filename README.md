@@ -1,26 +1,4 @@
 # CPMNuker
-<<<<<<< HEAD
-Car Parking Multiplayer Hacking ToolKit
-
-# requirements:
-- `cmake` and `make`
-- `gcc`
-
-# installation:
-- `git clone https://github.com/CPMNuker/CPMNuker.git`
-- `cd CPMNuker`
-- `mkdir build && cd build`
-- `cmake ..`
-- `make`
-
-# update:
-- `cp CPMNuker`
-- `rm -rf build`
-- `git pull`
-- `mkdir .build && cd build`
-- `cmake ..`
-- `make`
-=======
 <h3>CPMNuker is a tool made to modify Car Parking Multiplayer accounts with no root or vertual app.</h3>
 <h4>you just need an Access Key, wich you can get from <a href="https://t.me/CPMNukerBot">@CPMNukerBot</a> for free with 1K Credits Balance.</h4>
 
