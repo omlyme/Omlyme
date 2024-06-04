@@ -80,7 +80,7 @@ if __name__ == "__main__":
     while True:
         banner(console)
         acc_email = prompt_valid_value("[bold]➤ Account Email[/bold]", "Email", password=False)
-        acc_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=True)
+        acc_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=False)
         acc_access_key = prompt_valid_value("[bold]➤ Access Key[/bold]", "Access Key", password=False)
         console.print("[bold cyan]↻ Trying to Login[/bold cyan]: ", end=None)
         cpm = CPMNuker(acc_access_key)
