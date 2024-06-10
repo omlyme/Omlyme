@@ -98,6 +98,7 @@ if __name__ == "__main__":
             banner(console)
             load_player_data(cpm)
             load_key_data(cpm)
+            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
             console.print("[bold cyan](01): Increase Money ~ 1K[/bold cyan]")
             console.print("[bold cyan](02): Increase Coins ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](03): King Rank ~ 4K[/bold cyan]")
@@ -109,8 +110,10 @@ if __name__ == "__main__":
             console.print("[bold cyan](09): Account Register ~ FREE[/bold cyan]")
             console.print("[bold cyan](10): Delete Friends ~ 500[/bold cyan]")
             console.print("[bold cyan](11): Number Plates ~ 2K[/bold cyan]")
-            console.print("[bold cyan](00): Exit[/bold cyan]", end="\n\n")
-            service = IntPrompt.ask("[bold]➤ Select a Service [red][0-9 or 0][/red][/bold]", choices=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"], show_choices=False)
+            console.print("[bold cyan](12): Unlock w16 Engine ~ 3K[/bold cyan]")
+            console.print("[bold cyan](13): Unlock All Horns ~ 3K[/bold cyan]")
+            console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
+            service = IntPrompt.ask(f"[bold]➤ Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
                 console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
             elif service == 1: # Increase Money
@@ -222,7 +225,7 @@ if __name__ == "__main__":
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
                     console.print(f"[bold yellow]! You've been automatically signed in as[/bold yellow]: [blue]{acc2_email}[/blue]")
-                    sleep(2)
+                    sleep(4)
                     continue
                 elif status == 105:
                     console.print("[bold red]FAILED.[/bold red]")
@@ -250,6 +253,32 @@ if __name__ == "__main__":
             elif service == 11: # Number Plates
                 console.print("[bold cyan]↺ Giving you a Number Plates[/bold cyan]: ", end=None)
                 if cpm.set_player_plates():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 12: # Unlock w16 Engine
+                console.print("[bold cyan]↺ Unlocking w16 Engine[/bold cyan]: ", end=None)
+                if cpm.unlock_w16():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 13: # Unlock All Horns
+                console.print("[bold cyan]↺ Unlocking All Horns[/bold cyan]: ", end=None)
+                if cpm.unlock_horns():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
                     answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")

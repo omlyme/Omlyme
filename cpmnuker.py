@@ -106,3 +106,17 @@ class CPMNuker:
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
+    def unlock_w16(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/api/unlock_w16", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+    
+    def unlock_horns(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/api/unlock_horns", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+    
