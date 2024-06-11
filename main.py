@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+nó﻿#!/usr/bin/python
 
 # Copyright (C) Anasov <me@anasov.ly> - All Rights Reserved
 # Unauthorized copying of this file, via any medium is strictly prohibited
@@ -33,13 +33,6 @@ def load_player_data(cpm):
     console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')   if 'localID' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] Money  [/bold green]: { (data.get('money')     if 'money' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')      if 'coin' in data else 'UNDEFINED') }.")
-
-def load_key_data(cpm):
-    data = cpm.get_key_data()
-    console.print("[bold][red]========[/red][ ACCESS KEY DETAILS ][red]========[/red][/bold]")
-    console.print(f"[bold green] Access Key [/bold green]: { data.get('access_key') }.")
-    console.print(f"[bold green] Telegram ID[/bold green]: { data.get('telegram_id') }.")
-    console.print(f"[bold green] Credits    [/bold green]: { data.get('coins') }.", end="\n\n")
 
 def prompt_valid_value(content, tag, password=False):
     while True:
