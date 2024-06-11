@@ -32,7 +32,7 @@ def load_player_data(cpm):
     console.print(f"[bold green] Name   [/bold green]: { (data.get('Name')      if 'Name' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')   if 'localID' in data else 'UNDEFINED') }.")
     console.print(f"[bold green] Money  [/bold green]: { (data.get('money')     if 'money' in data else 'UNDEFINED') }.")
-    console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')      if 'coin' in data else 'UNDEFINED') }.")
+    console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')      if 'coin' in data else 'UNDEFINED') }.", end="\n\n")
 
 def load_key_data(cpm):
     data = cpm.get_key_data()
@@ -98,7 +98,7 @@ if __name__ == "__main__":
             banner(console)
             load_player_data(cpm)
             load_key_data(cpm)
-            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
+            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]
             console.print("[bold cyan](01): Increase Money ~ 1K[/bold cyan]")
             console.print("[bold cyan](02): Increase Coins ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](03): King Rank ~ 4K[/bold cyan]")
@@ -112,6 +112,8 @@ if __name__ == "__main__":
             console.print("[bold cyan](11): Number Plates ~ 2K[/bold cyan]")
             console.print("[bold cyan](12): Unlock w16 Engine ~ 3K[/bold cyan]")
             console.print("[bold cyan](13): Unlock All Horns ~ 3K[/bold cyan]")
+            console.print("[bold cyan](14): Unlock Disable Damage ~ 2K[/bold cyan]")
+            console.print("[bold cyan](15): Unlock Unlimited Fuel ~ 2K[/bold cyan]")
             console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
             service = IntPrompt.ask(f"[bold]➤ Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
@@ -279,6 +281,32 @@ if __name__ == "__main__":
             elif service == 13: # Unlock All Horns
                 console.print("[bold cyan]↺ Unlocking All Horns[/bold cyan]: ", end=None)
                 if cpm.unlock_horns():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 14: # Disable Engine Damage
+                console.print("[bold cyan]↺ Unlocking Disable Damage[/bold cyan]: ", end=None)
+                if cpm.disable_engine_damage():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 13: # Unlimited Fuel
+                console.print("[bold cyan]↺ Unlocking Unlimited Fuel[/bold cyan]: ", end=None)
+                if cpm.unlimited_fuel():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
                     answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")

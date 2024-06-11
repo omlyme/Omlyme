@@ -120,3 +120,17 @@ class CPMNuker:
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
+    def disable_engine_damage(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/api/disable_damage", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+
+    def unlimited_fuel(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/api/unlimited_fuel", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+    
