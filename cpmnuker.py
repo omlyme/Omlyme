@@ -137,15 +137,21 @@ class CPMNuker:
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
-    def set_player_wins(self) -> bool:
-        payload = { "account_auth": self.auth_token }
+    def set_player_wins(self, amount) -> bool:
+        payload = {
+            "account_auth": self.auth_token
+            "amount": amount
+        }
         params = { "key": self.access_key }
         response = requests.post(f"{BASE_URL}/api/set_race_wins", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
 
-    def set_player_loses(self) -> bool:
-        payload = { "account_auth": self.auth_token }
+    def set_player_loses(self, amount) -> bool:
+        payload = {
+            "account_auth": self.auth_token
+            "amount": amount
+        }
         params = { "key": self.access_key }
         response = requests.post(f"{BASE_URL}/api/set_race_loses", params=params, data=payload)
         response_decoded = json.loads(response.text)
