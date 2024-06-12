@@ -139,7 +139,7 @@ class CPMNuker:
     
     def set_player_wins(self, amount) -> bool:
         payload = {
-            "account_auth": self.auth_token
+            "account_auth": self.auth_token,
             "amount": amount
         }
         params = { "key": self.access_key }
@@ -149,7 +149,7 @@ class CPMNuker:
 
     def set_player_loses(self, amount) -> bool:
         payload = {
-            "account_auth": self.auth_token
+            "account_auth": self.auth_token,
             "amount": amount
         }
         params = { "key": self.access_key }
