@@ -161,3 +161,10 @@ class CPMNuker:
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
+    def unlock_smoke(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/unlock_smoke", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+    

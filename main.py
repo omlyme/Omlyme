@@ -111,7 +111,7 @@ if __name__ == "__main__":
             banner(console)
             load_player_data(cpm)
             load_key_data(cpm)
-            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
+            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
             console.print("[bold cyan](01): Increase Money ~ 1K[/bold cyan]")
             console.print("[bold cyan](02): Increase Coins ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](03): King Rank ~ 4K[/bold cyan]")
@@ -130,6 +130,7 @@ if __name__ == "__main__":
             console.print("[bold cyan](16): Change Race Wins ~ 1K[/bold cyan]")
             console.print("[bold cyan](17): Change Race Loses ~ 1K[/bold cyan]")
             console.print("[bold cyan](18): Unlock House 3 ~ 3.5K[/bold cyan]")
+            console.print("[bold cyan](19): Unlock Smoke ~ 2K[/bold cyan]")
             console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
             service = IntPrompt.ask(f"[bold]➤ Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
@@ -367,6 +368,19 @@ if __name__ == "__main__":
             elif service == 18: # Unlock House 3
                 console.print("[bold cyan]↺ Unlocking House 3[/bold cyan]: ", end=None)
                 if cpm.unlock_houses():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 19: # Unlock Smoke
+                console.print("[bold cyan]↺ Unlocking Smoke[/bold cyan]: ", end=None)
+                if cpm.unlock_smoke():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
                     answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
