@@ -30,13 +30,17 @@ def load_player_data(cpm):
     response = cpm.get_player_data()
     if response.get('ok'):
         data = response.get('data')
-        console.print("[bold][red]========[/red][ PLAYER DETAILS ][red]========[/red][/bold]")
-        console.print(f"[bold green] Name   [/bold green]: { (data.get('Name')      if 'Name' in data else 'UNDEFINED') }.")
-        console.print(f"[bold green] LocalID[/bold green]: { (data.get('localID')   if 'localID' in data else 'UNDEFINED') }.")
-        console.print(f"[bold green] Money  [/bold green]: { (data.get('money')     if 'money' in data else 'UNDEFINED') }.")
-        console.print(f"[bold green] Coins  [/bold green]: { (data.get('coin')      if 'coin' in data else 'UNDEFINED') }.", end="\n\n")
+        if 'floats' in data and 'localID' in data and 'money' in data and 'coin' in data:
+            console.print("[bold][red]========[/red][ PLAYER DETAILS ][red]========[/red][/bold]")
+            console.print(f"[bold green] Name   [/bold green]: { (data.get('Name') if 'Name' in data else 'UNDEFINED') }.")
+            console.print(f"[bold green] LocalID[/bold green]: { data.get('localID') }.")
+            console.print(f"[bold green] Money  [/bold green]: { data.get('money') }.")
+            console.print(f"[bold green] Coins  [/bold green]: { data.get('coin') }.", end="\n\n")
+        else:
+            console.print("[bold red]! ERROR[/bold red]: new accounts most be signed-in to the game at least once !.")
+            exit(1)
     else:
-        console.print("[bold red]! ERROR[/bold red]: seems like your login is not properly set !.", end="\n\n")
+        console.print("[bold red]! ERROR[/bold red]: seems like your login is not properly set !.")
         exit(1)
 
 def load_key_data(cpm):
@@ -85,22 +89,8 @@ if __name__ == "__main__":
         if login_response != 0:
             if login_response == 100:
                 console.print("[bold red]ACCOUNT NOT FOUND[/bold red].")
-                console.print("==================================")
-                answ = Prompt.ask("[bold cyan]➤ Do You want to Register new account ?[/bold cyan]", choices=["y", "n"], default="y")
-                if answ == "y":
-                    console.print("[bold cyan]↺ Creating new Account[/bold cyan]: ", end=None)
-                    status = cpm.register(acc_email, acc_password)
-                    if status == 0:
-                        console.print("[bold green]SUCCESSFUL.[/bold green]")
-                        console.print("==================================")
-                        console.print(f"[bold yellow]! You've been automatically signed in as[/bold yellow]: [blue]{acc_email}[/blue].")
-                        sleep(2)
-                    else:
-                        console.print("[bold red]FAILED.[/bold red]")
-                        console.print("[bold yellow]✶ Please try again.[/bold yellow]")
-                        sleep(2)
-                        continue
-                else: continue
+                sleep(2)
+                continue
             elif login_response == 101:
                 console.print("[bold red]WRONG PASSWORD[/bold red].")
                 sleep(2)
@@ -121,14 +111,14 @@ if __name__ == "__main__":
             banner(console)
             load_player_data(cpm)
             load_key_data(cpm)
-            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"]
+            choices = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
             console.print("[bold cyan](01): Increase Money ~ 1K[/bold cyan]")
             console.print("[bold cyan](02): Increase Coins ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](03): King Rank ~ 4K[/bold cyan]")
             console.print("[bold cyan](04): Change ID ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](05): Change Name ~ 100[/bold cyan]")
             console.print("[bold cyan](06): Change Name (Rainbow) ~ 100[/bold cyan]")
-            console.print("[bold cyan](07): Unlock All Cars ~ 5K[/bold cyan]")
+            console.print("[bold cyan](07): Unlock Paid Cars ~ 5K[/bold cyan]")
             console.print("[bold cyan](08): Account Delete ~ FREE[/bold cyan]")
             console.print("[bold cyan](09): Account Register ~ FREE[/bold cyan]")
             console.print("[bold cyan](10): Delete Friends ~ 500[/bold cyan]")
@@ -139,6 +129,7 @@ if __name__ == "__main__":
             console.print("[bold cyan](15): Unlock Unlimited Fuel ~ 2K[/bold cyan]")
             console.print("[bold cyan](16): Change Race Wins ~ 1K[/bold cyan]")
             console.print("[bold cyan](17): Change Race Loses ~ 1K[/bold cyan]")
+            console.print("[bold cyan](18): Unlock House 3 ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
             service = IntPrompt.ask(f"[bold]➤ Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
@@ -251,7 +242,8 @@ if __name__ == "__main__":
                 if status == 0:
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    console.print(f"[bold yellow]! You've been automatically signed in as[/bold yellow]: [blue]{acc2_email}[/blue].")
+                    console.print(f"[bold red]! INFO[/bold red]: In order to tweak this account with CPMNuker")
+                    console.print("you most sign-in to the game using this account.")
                     sleep(2)
                     continue
                 elif status == 105:
@@ -362,6 +354,19 @@ if __name__ == "__main__":
                 amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
                 console.print("[bold cyan]↺ Changing your data[/bold cyan]: ", end=None)
                 if cpm.set_player_loses(amount):
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 18: # Unlock House 3
+                console.print("[bold cyan]↺ Unlocking House 3[/bold cyan]: ", end=None)
+                if cpm.unlock_houses():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
                     answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")

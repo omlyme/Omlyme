@@ -7,7 +7,7 @@ from time import sleep
 # Proprietary and confidential
 # Written by Anasov <me@anasov.ly>, 05, May, 2024.
 
-BASE_URL: str = "https://cpmnuker.anasov.ly"
+BASE_URL: str = "https://cpmnuker.anasov.ly/api"
 
 class CPMNuker:
 
@@ -18,7 +18,7 @@ class CPMNuker:
     def login(self, email, password) -> int:
         payload = { "account_email": email, "account_password": password }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/account_login", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/account_login", params=params, data=payload)
         response_decoded = json.loads(response.text)
         if response_decoded.get("ok"):
             self.auth_token = response_decoded.get("auth")
@@ -27,37 +27,34 @@ class CPMNuker:
     def register(self, email, password) -> int:
         payload = { "account_email": email, "account_password": password }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/account_register", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/account_register", params=params, data=payload)
         response_decoded = json.loads(response.text)
-        if response_decoded.get("ok"):
-            sleep(2)
-            self.login(email, password)
         return response_decoded.get("error")
     
     def delete(self):
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        # response = requests.post(f"{BASE_URL}/api/account_delete", params=params, data=payload)
-        requests.post(f"{BASE_URL}/api/account_delete", params=params, data=payload)
+        # response = requests.post(f"{BASE_URL}/account_delete", params=params, data=payload)
+        requests.post(f"{BASE_URL}/account_delete", params=params, data=payload)
         # response_decoded = json.loads(response.text)
 
     def get_player_data(self) -> any:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/get_data", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/get_data", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded
     
     def set_player_rank(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_rank", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_rank", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def get_key_data(self) -> any:
         params = { "key": self.access_key }
-        response = requests.get(f"{BASE_URL}/api/get_key_data", params=params)
+        response = requests.get(f"{BASE_URL}/get_key_data", params=params)
         response_decoded = json.loads(response.text)
         return response_decoded
     
@@ -67,7 +64,7 @@ class CPMNuker:
             "amount": amount
         }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_money", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_money", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
@@ -77,63 +74,63 @@ class CPMNuker:
             "amount": amount
         }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_coins", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_coins", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def set_player_name(self, name) -> bool:
         payload = { "account_auth": self.auth_token, "name": name }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_name", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_name", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def set_player_localid(self, id) -> bool:
         payload = { "account_auth": self.auth_token, "id": id }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_id", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_id", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
 
     def set_player_plates(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_plates", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_plates", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def delete_player_friends(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/delete_friends", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/delete_friends", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def unlock_w16(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/unlock_w16", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/unlock_w16", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def unlock_horns(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/unlock_horns", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/unlock_horns", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
     def disable_engine_damage(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/disable_damage", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/disable_damage", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
 
     def unlimited_fuel(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/unlimited_fuel", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/unlimited_fuel", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
@@ -143,7 +140,7 @@ class CPMNuker:
             "amount": amount
         }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_race_wins", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_race_wins", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
 
@@ -153,7 +150,14 @@ class CPMNuker:
             "amount": amount
         }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/api/set_race_loses", params=params, data=payload)
+        response = requests.post(f"{BASE_URL}/set_race_loses", params=params, data=payload)
+        response_decoded = json.loads(response.text)
+        return response_decoded.get("ok")
+
+    def unlock_houses(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/unlock_houses", params=params, data=payload)
         response_decoded = json.loads(response.text)
         return response_decoded.get("ok")
     
