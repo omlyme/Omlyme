@@ -10,6 +10,8 @@ from time import sleep
 import os, signal, sys
 from rich.console import Console
 from rich.prompt import Prompt, IntPrompt
+from rich.text import Text
+from rich.style import Style
 from cpmnuker import CPMNuker
 
 __CHANNEL_USERNAME__ = "CPMNuker"
@@ -19,11 +21,41 @@ def signal_handler(sig, frame):
     print("\n Bye Bye...")
     sys.exit(0)
 
+def gradient_text(text, colors):
+    lines = text.splitlines()
+    height = len(lines)
+    width = max(len(line) for line in lines)
+    colorful_text = Text()
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            if char != ' ':
+                color_index = int(((x / (width - 1 if width > 1 else 1)) + (y / (height - 1 if height > 1 else 1))) * 0.5 * (len(colors) - 1))
+                color_index = min(max(color_index, 0), len(colors) - 1)  # Ensure the index is within bounds
+                style = Style(color=colors[color_index])
+                colorful_text.append(char, style=style)
+            else:
+                colorful_text.append(char)
+        colorful_text.append("\n")
+    return colorful_text
+
 def banner(console):
     os.system('cls' if os.name == 'nt' else 'clear')
+    brand_name =  " ██████╗██████╗ ███╗   ███╗███╗   ██╗██╗   ██╗██╗  ██╗███████╗██████╗\n"
+    brand_name += "██╔════╝██╔══██╗████╗ ████║████╗  ██║██║   ██║██║ ██╔╝██╔════╝██╔══██╗\n"
+    brand_name += "██║     ██████╔╝██╔████╔██║██╔██╗ ██║██║   ██║█████╔╝ █████╗  ██████╔╝\n"
+    brand_name += "██║     ██╔═══╝ ██║╚██╔╝██║██║╚██╗██║██║   ██║██╔═██╗ ██╔══╝  ██╔══██╗\n"
+    brand_name += "╚██████╗██║     ██║ ╚═╝ ██║██║ ╚████║╚██████╔╝██║  ██╗███████╗██║  ██║\n"
+    brand_name += " ╚═════╝╚═╝     ╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝\n"
+    colors = [
+        "rgb(255,0,0)", "rgb(255,69,0)", "rgb(255,140,0)", "rgb(255,215,0)", "rgb(173,255,47)", 
+        "rgb(0,255,0)", "rgb(0,255,255)", "rgb(0,191,255)", "rgb(0,0,255)", "rgb(139,0,255)",
+        "rgb(255,0,255)"
+    ]
+    colorful_text = gradient_text(brand_name, colors)
+    console.print(colorful_text)
     console.print("[bold green]♕ CPMNuker[/bold green]: Car Parking Multiplayer Hacking Tool.")
     console.print(f"[bold green]♕ Telegram[/bold green]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue] or [bold blue]@{__GROUP_USERNAME__}[/bold blue].")
-    console.print("==================================================")
+    console.print("[bold red]==================================================[/bold red]")
     console.print("[bold yellow]! Note[/bold yellow]: Logout from CPM before using this tool !.", end="\n\n")
 
 def load_player_data(cpm):
@@ -32,10 +64,10 @@ def load_player_data(cpm):
         data = response.get('data')
         if 'floats' in data and 'localID' in data and 'money' in data and 'coin' in data:
             console.print("[bold][red]========[/red][ PLAYER DETAILS ][red]========[/red][/bold]")
-            console.print(f"[bold green] Name   [/bold green]: { (data.get('Name') if 'Name' in data else 'UNDEFINED') }.")
-            console.print(f"[bold green] LocalID[/bold green]: { data.get('localID') }.")
-            console.print(f"[bold green] Money  [/bold green]: { data.get('money') }.")
-            console.print(f"[bold green] Coins  [/bold green]: { data.get('coin') }.", end="\n\n")
+            console.print(f"[bold green]Name   [/bold green]: { (data.get('Name') if 'Name' in data else 'UNDEFINED') }.")
+            console.print(f"[bold green]LocalID[/bold green]: { (data.get('localID') if 'localID' in data else 'UNDEFINED') }.")
+            console.print(f"[bold green]Money  [/bold green]: { (data.get('money') if 'money' in data else 'UNDEFINED') }.")
+            console.print(f"[bold green]Coins  [/bold green]: { (data.get('coin') if 'coin' in data else 'UNDEFINED') }.", end="\n\n")
         else:
             console.print("[bold red]! ERROR[/bold red]: new accounts most be signed-in to the game at least once !.")
             exit(1)
@@ -46,9 +78,9 @@ def load_player_data(cpm):
 def load_key_data(cpm):
     data = cpm.get_key_data()
     console.print("[bold][red]========[/red][ ACCESS KEY DETAILS ][red]========[/red][/bold]")
-    console.print(f"[bold green] Access Key [/bold green]: { data.get('access_key') }.")
-    console.print(f"[bold green] Telegram ID[/bold green]: { data.get('telegram_id') }.")
-    console.print(f"[bold green] Credits    [/bold green]: { (data.get('coins') if not data.get('is_unlimited') else 'Unlimited') }.", end="\n\n")
+    console.print(f"[bold green]Access Key [/bold green]: { data.get('access_key') }.")
+    console.print(f"[bold green]Telegram ID[/bold green]: { data.get('telegram_id') }.")
+    console.print(f"[bold green]Credits    [/bold green]: { (data.get('coins') if not data.get('is_unlimited') else 'Unlimited') }.", end="\n\n")
 
 def prompt_valid_value(content, tag, password=False):
     while True:
@@ -80,10 +112,10 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     while True:
         banner(console)
-        acc_email = prompt_valid_value("[bold]➤ Account Email[/bold]", "Email", password=False)
-        acc_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=False)
-        acc_access_key = prompt_valid_value("[bold]➤ Access Key[/bold]", "Access Key", password=False)
-        console.print("[bold cyan]↻ Trying to Login[/bold cyan]: ", end=None)
+        acc_email = prompt_valid_value("[bold][?] Account Email[/bold]", "Email", password=False)
+        acc_password = prompt_valid_value("[bold][?] Account Password[/bold]", "Password", password=False)
+        acc_access_key = prompt_valid_value("[bold][?] Access Key[/bold]", "Access Key", password=False)
+        console.print("[bold cyan][%] Trying to Login[/bold cyan]: ", end=None)
         cpm = CPMNuker(acc_access_key)
         login_response = cpm.login(acc_email, acc_password)
         if login_response != 0:
@@ -118,139 +150,171 @@ if __name__ == "__main__":
             console.print("[bold cyan](04): Change ID ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](05): Change Name ~ 100[/bold cyan]")
             console.print("[bold cyan](06): Change Name (Rainbow) ~ 100[/bold cyan]")
-            console.print("[bold cyan](07): Unlock Paid Cars ~ 5K[/bold cyan]")
+            console.print("[bold cyan](07): Number Plates ~ 2K[/bold cyan]")
             console.print("[bold cyan](08): Account Delete ~ FREE[/bold cyan]")
             console.print("[bold cyan](09): Account Register ~ FREE[/bold cyan]")
             console.print("[bold cyan](10): Delete Friends ~ 500[/bold cyan]")
-            console.print("[bold cyan](11): Number Plates ~ 2K[/bold cyan]")
+            console.print("[bold cyan](11): Unlock Paid Cars ~ 5K[/bold cyan]")
             console.print("[bold cyan](12): Unlock w16 Engine ~ 3K[/bold cyan]")
             console.print("[bold cyan](13): Unlock All Horns ~ 3K[/bold cyan]")
             console.print("[bold cyan](14): Unlock Disable Damage ~ 2K[/bold cyan]")
             console.print("[bold cyan](15): Unlock Unlimited Fuel ~ 2K[/bold cyan]")
-            console.print("[bold cyan](16): Change Race Wins ~ 1K[/bold cyan]")
-            console.print("[bold cyan](17): Change Race Loses ~ 1K[/bold cyan]")
-            console.print("[bold cyan](18): Unlock House 3 ~ 3.5K[/bold cyan]")
-            console.print("[bold cyan](19): Unlock Smoke ~ 2K[/bold cyan]")
+            console.print("[bold cyan](16): Unlock House 3 ~ 3.5K[/bold cyan]")
+            console.print("[bold cyan](17): Unlock Smoke ~ 2K[/bold cyan]")
+            console.print("[bold cyan](18): Change Race Wins ~ 1K[/bold cyan]")
+            console.print("[bold cyan](19): Change Race Loses ~ 1K[/bold cyan]")
             console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
-            service = IntPrompt.ask(f"[bold]➤ Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
+            service = IntPrompt.ask(f"[bold][?] Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
-                console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
             elif service == 1: # Increase Money
-                console.print("[bold cyan]✶ Insert how much money do you want.[/bold cyan]")
-                amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
-                console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
-                if cpm.set_player_money(amount):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
+                console.print("[bold cyan][!] Insert how much money do you want.[/bold cyan]")
+                amount = IntPrompt.ask("[bold][?] Amount[/bold]")
+                console.print("[bold cyan][%] Saving your data[/bold cyan]: ", end=None)
+                if amount > 0 and amount <= 50000000:
+                    if cpm.set_player_money(amount):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 2: # Increase Coins
-                console.print("[bold cyan]✶ Insert how much coins do you want.[/bold cyan]")
-                amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
-                console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
-                if cpm.set_player_coins(amount):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
+                console.print("[bold cyan][!] Insert how much coins do you want.[/bold cyan]")
+                amount = IntPrompt.ask("[bold][?] Amount[/bold]")
+                console.print("[bold cyan][%] Saving your data[/bold cyan]: ", end=None)
+                if amount > 0 and amount <= 90000:
+                    if cpm.set_player_coins(amount):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 3: # King Rank
-                console.print("[bold cyan]↺ Giving you a King Rank[/bold cyan]: ", end=None)
+                console.print("[bold red][!] Note:[/bold red]: if the king rank doesn't appear in game, close it and open few times.", end=None)
+                console.print("[bold red][!] Note:[/bold red]: please don't do King Rank on same account twice.", end=None)
+                sleep(2)
+                console.print("[bold cyan][%] Giving you a King Rank[/bold cyan]: ", end=None)
                 if cpm.set_player_rank():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 4: # Change ID
-                console.print("[bold cyan]✶ Enter your new ID.[/bold cyan]")
-                new_id = Prompt.ask("[bold]➤ ID[/bold]")
-                console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
-                if cpm.set_player_localid(new_id):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
+                console.print("[bold cyan][!] Enter your new ID.[/bold cyan]")
+                new_id = Prompt.ask("[bold][?] ID[/bold]")
+                console.print("[bold cyan][%] Saving your data[/bold cyan]: ", end=None)
+                if len(new_id) >= 9 and len(new_id) <= 14 and (' ' in new_id) == False:
+                    if cpm.set_player_localid(new_id.upper()):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please use valid ID.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 5: # Change Name
-                console.print("[bold cyan]✶ Enter your new Name.[/bold cyan]")
-                new_name = Prompt.ask("[bold]➤ Name[/bold]")
-                console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
-                if cpm.set_player_name(new_name):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
+                console.print("[bold cyan][!] Enter your new Name.[/bold cyan]")
+                new_name = Prompt.ask("[bold][?] Name[/bold]")
+                console.print("[bold cyan][%] Saving your data[/bold cyan]: ", end=None)
+                if len(new_name) >= 0 and len(new_name) <= 30:
+                    if cpm.set_player_name(new_name):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 6: # Change Name Rainbow
-                console.print("[bold cyan]✶ Enter your new Rainbow Name.[/bold cyan]")
-                new_name = Prompt.ask("[bold]➤ Name[/bold]")
-                console.print("[bold cyan]↺ Saving your data[/bold cyan]: ", end=None)
-                if cpm.set_player_name(rainbow_gradient_string(new_name)):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
+                console.print("[bold cyan][!] Enter your new Rainbow Name.[/bold cyan]")
+                new_name = Prompt.ask("[bold][?] Name[/bold]")
+                console.print("[bold cyan][%] Saving your data[/bold cyan]: ", end=None)
+                if len(new_name) >= 0 and len(new_name) <= 30:
+                    if cpm.set_player_name(rainbow_gradient_string(new_name)):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
                     sleep(2)
                     continue
-            elif service == 7: # Unlock All Cars
-                console.print("[bold yellow]! Note[/bold yellow]: this function takes a while to complete, please don't cancel.", end=None)
-                console.print("[bold cyan]↺ Unlocking All Paid Cars[/bold cyan]: ", end=None)
-                if cpm.unlock_paid_cars():
+            elif service == 7: # Number Plates
+                console.print("[bold cyan][%] Giving you a Number Plates[/bold cyan]: ", end=None)
+                if cpm.set_player_plates():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 8: # Account Delete
-                console.print("[bold cyan]✶ After deleting your account there is no going back !!.[/bold cyan]")
-                answ = Prompt.ask("[bold cyan]➤ Do You want to Delete this Account ?![/bold cyan]", choices=["y", "n"], default="n")
+                console.print("[bold cyan][!] After deleting your account there is no going back !!.[/bold cyan]")
+                answ = Prompt.ask("[bold cyan][?] Do You want to Delete this Account ?![/bold cyan]", choices=["y", "n"], default="n")
                 if answ == "y":
                     cpm.delete()
-                    console.print("[bold cyan]↺ Deleting Your Account[/bold cyan]: [bold green]SUCCESSFUL.[/bold green].")
+                    console.print("[bold cyan][%] Deleting Your Account[/bold cyan]: [bold green]SUCCESSFUL.[/bold green].")
                     console.print("==================================")
-                    console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                 else: continue
             elif service == 9: # Account Register
-                console.print("[bold cyan]✶ Registring new Account.[/bold cyan]")
-                acc2_email = prompt_valid_value("[bold]➤ Account Email[/bold]", "Email", password=False)
-                acc2_password = prompt_valid_value("[bold]➤ Account Password[/bold]", "Password", password=False)
-                console.print("[bold cyan]↺ Creating new Account[/bold cyan]: ", end=None)
+                console.print("[bold cyan][!] Registring new Account.[/bold cyan]")
+                acc2_email = prompt_valid_value("[bold][?] Account Email[/bold]", "Email", password=False)
+                acc2_password = prompt_valid_value("[bold][?] Account Password[/bold]", "Password", password=False)
+                console.print("[bold cyan][%] Creating new Account[/bold cyan]: ", end=None)
                 status = cpm.register(acc2_email, acc2_password)
                 if status == 0:
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
@@ -261,150 +325,162 @@ if __name__ == "__main__":
                     continue
                 elif status == 105:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ This email is already exists !.[/bold yellow]")
+                    console.print("[bold yellow][!] This email is already exists !.[/bold yellow]")
                     sleep(2)
                     continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 10: # Delete Friends
-                console.print("[bold cyan]↺ Deleting your Friends[/bold cyan]: ", end=None)
+                console.print("[bold cyan][%] Deleting your Friends[/bold cyan]: ", end=None)
                 if cpm.delete_player_friends():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
-            elif service == 11: # Number Plates
-                console.print("[bold cyan]↺ Giving you a Number Plates[/bold cyan]: ", end=None)
-                if cpm.set_player_plates():
+            elif service == 11: # Unlock All Paid Cars
+                console.print("[bold yellow]! Note[/bold yellow]: this function takes a while to complete, please don't cancel.", end=None)
+                console.print("[bold cyan][%] Unlocking All Paid Cars[/bold cyan]: ", end=None)
+                if cpm.unlock_paid_cars():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 12: # Unlock w16 Engine
-                console.print("[bold cyan]↺ Unlocking w16 Engine[/bold cyan]: ", end=None)
+                console.print("[bold cyan][%] Unlocking w16 Engine[/bold cyan]: ", end=None)
                 if cpm.unlock_w16():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 13: # Unlock All Horns
-                console.print("[bold cyan]↺ Unlocking All Horns[/bold cyan]: ", end=None)
+                console.print("[bold cyan][%] Unlocking All Horns[/bold cyan]: ", end=None)
                 if cpm.unlock_horns():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 14: # Disable Engine Damage
-                console.print("[bold cyan]↺ Unlocking Disable Damage[/bold cyan]: ", end=None)
+                console.print("[bold cyan][%] Unlocking Disable Damage[/bold cyan]: ", end=None)
                 if cpm.disable_engine_damage():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             elif service == 15: # Unlimited Fuel
-                console.print("[bold cyan]↺ Unlocking Unlimited Fuel[/bold cyan]: ", end=None)
+                console.print("[bold cyan][%] Unlocking Unlimited Fuel[/bold cyan]: ", end=None)
                 if cpm.unlimited_fuel():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
-            elif service == 16: # Change Races Wins
-                console.print("[bold cyan]✶ Insert how much races you win.[/bold cyan]")
-                amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
-                console.print("[bold cyan]↺ Changing your data[/bold cyan]: ", end=None)
-                if cpm.set_player_wins(amount):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
-                else:
-                    console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
-                    sleep(2)
-                    continue
-            elif service == 17: # Change Races Loses
-                console.print("[bold cyan]✶ Insert how much races you lose.[/bold cyan]")
-                amount = IntPrompt.ask("[bold]➤ Amount[/bold]")
-                console.print("[bold cyan]↺ Changing your data[/bold cyan]: ", end=None)
-                if cpm.set_player_loses(amount):
-                    console.print("[bold green]SUCCESSFUL.[/bold green]")
-                    console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
-                    else: continue
-                else:
-                    console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
-                    sleep(2)
-                    continue
-            elif service == 18: # Unlock House 3
-                console.print("[bold cyan]↺ Unlocking House 3[/bold cyan]: ", end=None)
+            elif service == 16: # Unlock House 3
+                console.print("[bold cyan][%] Unlocking House 3[/bold cyan]: ", end=None)
                 if cpm.unlock_houses():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
-            elif service == 19: # Unlock Smoke
-                console.print("[bold cyan]↺ Unlocking Smoke[/bold cyan]: ", end=None)
+            elif service == 17: # Unlock Smoke
+                console.print("[bold cyan][%] Unlocking Smoke[/bold cyan]: ", end=None)
                 if cpm.unlock_smoke():
                     console.print("[bold green]SUCCESSFUL.[/bold green]")
                     console.print("==================================")
-                    answ = Prompt.ask("[bold cyan]➤ Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
-                    if answ == "y": console.print(f"[bold yellow]✴ Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
                     else: continue
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
-                    console.print("[bold yellow]✶ Please try again.[/bold yellow]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 18: # Change Races Wins
+                console.print("[bold cyan][!] Insert how much races you win.[/bold cyan]")
+                amount = IntPrompt.ask("[bold][?] Amount[/bold]")
+                console.print("[bold cyan][%] Changing your data[/bold cyan]: ", end=None)
+                if amount > 0 and amount <= 999:
+                    if cpm.set_player_wins(amount):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 19: # Change Races Loses
+                console.print("[bold cyan][!] Insert how much races you lose.[/bold cyan]")
+                amount = IntPrompt.ask("[bold][?] Amount[/bold]")
+                console.print("[bold cyan][%] Changing your data[/bold cyan]: ", end=None)
+                if amount > 0 and amount <= 999:
+                    if cpm.set_player_loses(amount):
+                        console.print("[bold green]SUCCESSFUL.[/bold green]")
+                        console.print("==================================")
+                        answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                        if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                        else: continue
+                    else:
+                        console.print("[bold red]FAILED.[/bold red]")
+                        console.print("[bold yellow][!] Please try again.[/bold yellow]")
+                        sleep(2)
+                        continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
                     sleep(2)
                     continue
             else:
                 continue
             break
         break
-    
