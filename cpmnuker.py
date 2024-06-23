@@ -97,6 +97,13 @@ class CPMNuker:
         response_decoded = response.json()
         return response_decoded.get("ok")
     
+    def get_player_car(self, car_id) -> any:
+        payload = { "account_auth": self.auth_token, "car_id": car_id }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/get_car", params=params, data=payload)
+        response_decoded = response.json()
+        return response_decoded.get("ok")
+    
     def delete_player_friends(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
@@ -170,6 +177,13 @@ class CPMNuker:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
         response = requests.post(f"{BASE_URL}/unlock_paid_cars", params=params, data=payload)
+        response_decoded = response.json()
+        return response_decoded.get("ok")
+    
+    def unlock_all_cars(self) -> bool:
+        payload = { "account_auth": self.auth_token }
+        params = { "key": self.access_key }
+        response = requests.post(f"{BASE_URL}/unlock_all_cars", params=params, data=payload, timeout=120)
         response_decoded = response.json()
         return response_decoded.get("ok")
     

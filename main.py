@@ -154,7 +154,7 @@ if __name__ == "__main__":
             console.print("[bold cyan](08): Account Delete ~ FREE[/bold cyan]")
             console.print("[bold cyan](09): Account Register ~ FREE[/bold cyan]")
             console.print("[bold cyan](10): Delete Friends ~ 500[/bold cyan]")
-            console.print("[bold cyan](11): Unlock Paid Cars ~ 5K[/bold cyan]")
+            console.print("[bold cyan](11): Unlock Paid Cars + Siren ~ 5K[/bold cyan]")
             console.print("[bold cyan](12): Unlock w16 Engine ~ 3K[/bold cyan]")
             console.print("[bold cyan](13): Unlock All Horns ~ 3K[/bold cyan]")
             console.print("[bold cyan](14): Unlock Disable Damage ~ 2K[/bold cyan]")
@@ -163,6 +163,8 @@ if __name__ == "__main__":
             console.print("[bold cyan](17): Unlock Smoke ~ 2K[/bold cyan]")
             console.print("[bold cyan](18): Change Race Wins ~ 1K[/bold cyan]")
             console.print("[bold cyan](19): Change Race Loses ~ 1K[/bold cyan]")
+            console.print("[bold cyan](20): Clone Account ~ 5K[/bold cyan]")
+            console.print("[bold cyan](21): Unlock all Cars + Siren ~ 3.5K[/bold cyan]")
             console.print("[bold cyan](0) : Exit[/bold cyan]", end="\n\n")
             service = IntPrompt.ask(f"[bold][?] Select a Service [red][1-{choices[-1]} or 0][/red][/bold]", choices=choices, show_choices=False)
             if service == 0: # Exit
@@ -346,7 +348,7 @@ if __name__ == "__main__":
                     console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
-            elif service == 11: # Unlock All Paid Cars
+            elif service == 11: # Unlock All Paid Cars + Siren
                 console.print("[bold yellow]! Note[/bold yellow]: this function takes a while to complete, please don't cancel.", end=None)
                 console.print("[bold cyan][%] Unlocking All Paid Cars[/bold cyan]: ", end=None)
                 if cpm.unlock_paid_cars():
@@ -478,6 +480,22 @@ if __name__ == "__main__":
                 else:
                     console.print("[bold red]FAILED.[/bold red]")
                     console.print("[bold yellow][!] Please use valid values.[/bold yellow]")
+                    sleep(2)
+                    continue
+            elif service == 20: # Clone Account
+                continue
+            elif service == 21: # Unlock all cars + Siren
+                console.print("[bold yellow]! Note[/bold yellow]: this function takes a while to complete, please don't cancel.", end=None)
+                console.print("[bold cyan][%] Unlocking All Cars[/bold cyan]: ", end=None)
+                if cpm.unlock_all_cars():
+                    console.print("[bold green]SUCCESSFUL.[/bold green]")
+                    console.print("==================================")
+                    answ = Prompt.ask("[bold cyan][?] Do You want to Exit ?[/bold cyan]", choices=["y", "n"], default="n")
+                    if answ == "y": console.print(f"[bold yellow][!] Thank You for using our tool, please join our telegram channel[/bold yellow]: [bold blue]@{__CHANNEL_USERNAME__}[/bold blue].")
+                    else: continue
+                else:
+                    console.print("[bold red]FAILED.[/bold red]")
+                    console.print("[bold yellow][!] Please try again.[/bold yellow]")
                     sleep(2)
                     continue
             else:
