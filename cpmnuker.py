@@ -183,21 +183,21 @@ class CPMNuker:
     def unlock_all_cars(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/unlock_all_cars", params=params, data=payload, timeout=120)
+        response = requests.post(f"{BASE_URL}/unlock_all_cars", params=params, data=payload)
         response_decoded = response.json()
         return response_decoded.get("ok")
     
     def unlock_all_cars_siren(self) -> bool:
         payload = { "account_auth": self.auth_token }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/unlock_all_cars_siren", params=params, data=payload, timeout=120)
+        response = requests.post(f"{BASE_URL}/unlock_all_cars_siren", params=params, data=payload)
         response_decoded = response.json()
         return response_decoded.get("ok")
     
     def account_clone(self, account_email, account_password) -> bool:
         payload = { "account_auth": self.auth_token, "account_email": account_email, "account_password": account_password }
         params = { "key": self.access_key }
-        response = requests.post(f"{BASE_URL}/clone", params=params, data=payload, timeout=120)
+        response = requests.post(f"{BASE_URL}/clone", params=params, data=payload)
         response_decoded = response.json()
         return response_decoded.get("ok")
     
