@@ -1,6 +1,6 @@
-# CPMNuker
-<h3>CPMNuker is a tool made to modify Car Parking Multiplayer accounts with no root or vertual app.</h3>
-<h4>you just need an Access Key, wich you can get from <a href="https://t.me/CPMNukerBot">@CPMNukerBot</a> for free with 1K Credits Balance.</h4>
+# OmlymeCPM
+<h3>OmlymeCPM is a tool made to modify Car Parking Multiplayer accounts with no root or vertual app.</h3>
+<h4>you just need an Access Key, wich you can get from <a href="https://t.me/Clementep_ee">@Clementep_ee</a> for free with 1K Credits Balance.</h4>
 
 ![](./assets/tool.png)
 
@@ -13,10 +13,10 @@
 ## Installation
 [don't know how to install python ?](#install-python)
 ```
-git clone https://github.com/CPMNuker/CPMNuker.git
+git clone https://github.com/omlyme/omlymecpm.git
 ```
 ```
-cd CPMNuker
+cd omlymecpm
 ```
 ```
 pip install -r requirements.txt
